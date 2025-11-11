@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         ],
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF1B5E20), // Moroccan green
+            seedColor: const Color(0xFF00BFFF), // Deep sky blue
             brightness: Brightness.light,
           ),
           useMaterial3: true,

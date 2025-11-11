@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/holiday.dart';
+import '../config/api_keys.dart';
 
 class HolidayService {
-  // Using Calendarific API - you'll need to get a free API key from https://calendarific.com/
-  static const String apiKey = 'YOUR_API_KEY_HERE';
+  // Using Calendarific API - get a free API key from https://calendarific.com/
+  // Configure your API key in lib/config/api_keys.dart
+  static const String apiKey = ApiKeys.calendarificApiKey;
   static const String baseUrl = 'https://calendarific.com/api/v2';
 
   // Fallback: Moroccan fixed holidays for 2024-2025
@@ -156,20 +158,34 @@ class HolidayService {
       // Try to fetch from API if key is configured
       if (apiKey != 'YOUR_API_KEY_HERE') {
         final response = await http.get(
-          Uri.parse('$baseUrl/holidays?api_key=$apiKey&country=MA&year=$year'),
+          Uri.parse('$baseUrl/holidays?api_key=$apiKey&country=MA&year=$year&type=national,religious'),
         ).timeout(const Duration(seconds: 5));
 
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
           final holidays = <Holiday>[];
           
+          // Verify we got Morocco data
+          if (data['response']['country']['id'] != 'ma') {
+            throw Exception('Wrong country data received');
+          }
+          
           for (var holiday in data['response']['holidays']) {
-            holidays.add(Holiday(
-              date: DateTime.parse(holiday['date']['iso']),
-              name: holiday['name'],
-              nameAr: holiday['name'], // API might not have Arabic names
-              type: holiday['type'][0],
-            ));
+            // Only include national and observance holidays
+            final types = holiday['type'] as List<dynamic>;
+            final typeString = types.isNotEmpty ? types[0].toString() : 'public';
+            
+            // Filter out local/regional holidays - only include national ones
+            if (holiday['locations'] == 'All' || 
+                holiday['locations'] == null ||
+                (holiday['locations'] is String && holiday['locations'] == 'All')) {
+              holidays.add(Holiday(
+                date: DateTime.parse(holiday['date']['iso']),
+                name: holiday['name'],
+                nameAr: holiday['name'], // API might not have Arabic names
+                type: typeString,
+              ));
+            }
           }
           
           return holidays;

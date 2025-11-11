@@ -1,0 +1,9 @@
+// API Keys Configuration Template
+// Copy this file to api_keys.dart and add your actual API keys
+
+class ApiKeys {
+  // Get your free API key from https://calendarific.com/
+  // Leave as 'YOUR_API_KEY_HERE' to use fallback holiday data
+  static const String calendarificApiKey = 'YOUR_API_KEY_HERE';
+}
+
