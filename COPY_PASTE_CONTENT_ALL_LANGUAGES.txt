@@ -1,0 +1,245 @@
+═══════════════════════════════════════════════════════════════
+GOOGLE PLAY CONSOLE - CONTENU MULTILINGUE
+═══════════════════════════════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTES DE VERSION - FRANÇAIS (Version 1.0.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Première version de Congé Calculateur !
+
+Calculez vos jours de congé sans effort avec la gestion automatique des week-ends et jours fériés. Parfait pour les agents des douanes marocaines qui doivent planifier leurs congés annuels avec précision.
+
+Fonctionnalités principales :
+• Calcul intelligent excluant les week-ends et jours fériés
+• Calendrier complet des fêtes marocaines
+• Suivi de vos jours de congé restants
+• Historique de vos congés sauvegardé
+• Calculateur d'horaires de travail pour la planification des équipes
+• Disponible en arabe, français et anglais
+
+Commencez à planifier vos congés en toute confiance !
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RELEASE NOTES - ENGLISH (Version 1.0.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+First release of Congé Calculateur!
+
+Calculate your vacation days effortlessly with automatic weekend and holiday handling. Perfect for Moroccan customs officers who need to plan their annual leave accurately.
+
+Key features:
+• Smart calculation that excludes weekends and public holidays
+• Complete Moroccan holiday calendar
+• Track your remaining vacation days
+• Save and review your vacation history
+• Work schedule calculator for shift planning
+• Available in Arabic, French, and English
+
+Start planning your vacations with confidence!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ملاحظات الإصدار - العربية (الإصدار 1.0.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+الإصدار الأول من حاسبة الإجازات!
+
+احسب أيام إجازتك بسهولة مع التعامل التلقائي مع عطلات نهاية الأسبوع والأعياد. مثالي لموظفي الجمارك المغاربة الذين يحتاجون إلى تخطيط إجازاتهم السنوية بدقة.
+
+الميزات الرئيسية:
+• حساب ذكي يستثني عطلات نهاية الأسبوع والأعياد
+• تقويم كامل للأعياد المغربية
+• تتبع أيام إجازتك المتبقية
+• حفظ ومراجعة تاريخ إجازاتك
+• حاسبة جدول العمل لتخطيط الورديات
+• متاح بالعربية والفرنسية والإنجليزية
+
+ابدأ في تخطيط إجازاتك بثقة!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESCRIPTION COURTE - FRANÇAIS (80 caractères)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Calculateur de congés pour agents douanes marocaines avec gestion automatique
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SHORT DESCRIPTION - ENGLISH (80 characters)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Vacation calculator for Moroccan customs officers with automatic holiday handling
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+الوصف القصير - العربية (80 حرف)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+حاسبة الإجازات لموظفي الجمارك المغاربة مع التعامل التلقائي مع الأعياد
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESCRIPTION COMPLÈTE - FRANÇAIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Congé Calculateur est un outil de planification de congés spécialement conçu pour les agents des douanes marocaines. Que vous planifiiez une courte pause ou des vacances plus longues, cette application facilite le calcul de votre date de retour au travail.
+
+COMMENT ÇA FONCTIONNE
+
+L'application suit les règles standard de l'administration des douanes marocaines. Vous disposez de 22 jours ouvrables de congé annuel par an. Lorsque vous demandez des jours de congé, les week-ends sont automatiquement ajoutés à votre période de congé et ne comptent pas dans vos 22 jours. Les jours fériés qui tombent pendant vos vacances sont également automatiquement inclus et ne comptent pas dans votre solde de congés annuels.
+
+Par exemple, si vous demandez 5 jours ouvrables à partir d'un lundi, l'application va :
+• Compter les 5 jours ouvrables dans vos congés annuels
+• Ajouter automatiquement le week-end (samedi et dimanche)
+• Ajouter tous les jours fériés qui surviennent pendant cette période
+• Vous indiquer exactement quand vous devez retourner au travail
+
+FONCTIONNALITÉS PRINCIPALES
+
+Calculateur de Congés Intelligent
+Entrez votre date de début et le nombre de jours ouvrables que vous souhaitez prendre. L'application calcule instantanément votre date de retour, vous montrant exactement combien de jours calendaires vous serez absent, y compris les week-ends et les jours fériés.
+
+Calendrier des Fêtes Marocaines
+Accédez à un calendrier complet des fêtes nationales et religieuses marocaines. L'application inclut automatiquement ces jours fériés dans vos calculs de congés, vous n'avez donc jamais à vous soucier de les manquer.
+
+Suivi des Congés Annuels
+Suivez le nombre de jours de congé que vous avez utilisés et combien il en reste tout au long de l'année. L'application vous montre un aperçu clair de votre solde de congés en un coup d'œil.
+
+Historique des Congés
+Enregistrez tous vos calculs de congés pour référence facile. Consultez les vacances passées et voyez les congés planifiés à venir, le tout au même endroit.
+
+Calculateur d'Horaires de Travail
+Planifiez vos équipes de travail avec le calculateur d'horaires intégré. Prend en charge différents systèmes d'horaires, y compris les horaires 12/24 et 12/24, 12/48 avec des heures de début personnalisables.
+
+Support Multi-Langues
+L'application est disponible en arabe, français et anglais. Choisissez votre langue préférée lors de la première ouverture de l'application et changez à tout moment depuis les paramètres.
+
+Paramètres Personnalisables
+Ajustez vos jours de congé annuels si nécessaire et personnalisez d'autres préférences de l'application pour correspondre à votre situation spécifique.
+
+POURQUOI UTILISER CETTE APPLICATION
+
+Planifier des vacances peut être compliqué lorsque vous devez tenir compte des week-ends et des jours fériés. Cette application s'occupe de tous ces calculs pour vous, vous assurant de toujours savoir exactement quand vous retournerez au travail. Plus besoin de compter manuellement ou de vérifier le calendrier - entrez simplement vos dates et obtenez des résultats instantanés et précis.
+
+Parfait pour les agents des douanes qui doivent planifier leurs demandes de congés avec précision et qui veulent tirer le meilleur parti de leurs 22 jours ouvrables annuels.
+
+Téléchargez maintenant et commencez à planifier vos vacances en toute confiance !
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FULL DESCRIPTION - ENGLISH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Congé Calculateur is a specialized vacation planning tool designed specifically for Moroccan customs officers. Whether you're planning a short break or a longer vacation, this app makes it easy to calculate exactly when you'll return to work.
+
+HOW IT WORKS
+
+The app follows the standard rules of the Moroccan customs administration. You have 22 working days of annual leave per year. When you request vacation days, weekends are automatically added to your leave period and don't count toward your 22 days. Public holidays that fall during your vacation are also automatically included and don't count against your annual leave balance.
+
+For example, if you request 5 working days starting on a Monday, the app will:
+• Count the 5 working days toward your annual leave
+• Automatically add the weekend (Saturday and Sunday)
+• Add any public holidays that occur during this period
+• Tell you exactly when you need to return to work
+
+KEY FEATURES
+
+Smart Vacation Calculator
+Enter your start date and the number of working days you want to take. The app instantly calculates your return date, showing you exactly how many calendar days you'll be away, including weekends and holidays.
+
+Moroccan Holiday Calendar
+Access a complete calendar of Moroccan national and religious holidays. The app automatically includes these holidays in your vacation calculations, so you never have to worry about missing them.
+
+Annual Leave Tracking
+Keep track of how many vacation days you've used and how many remain throughout the year. The app shows you a clear overview of your leave balance at a glance.
+
+Vacation History
+Save all your vacation calculations for easy reference. Review past vacations and see upcoming planned time off, all in one place.
+
+Work Schedule Calculator
+Plan your work shifts with the built-in schedule calculator. Supports different timing systems including 12/24 and 12/24, 12/48 schedules with customizable start times.
+
+Multi-Language Support
+The app is available in Arabic, French, and English. Choose your preferred language when you first open the app, and switch anytime from settings.
+
+Customizable Settings
+Adjust your annual leave days if needed and customize other app preferences to match your specific situation.
+
+WHY USE THIS APP
+
+Planning vacations can be complicated when you need to account for weekends and holidays. This app takes care of all those calculations for you, ensuring you always know exactly when you'll return to work. No more manual counting or calendar checking - just enter your dates and get instant, accurate results.
+
+Perfect for customs officers who need to plan their leave requests accurately and want to make the most of their 22 annual working days.
+
+Download now and start planning your vacations with confidence!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+الوصف الكامل - العربية
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+حاسبة الإجازات هي أداة متخصصة لخطط الإجازات مصممة خصيصًا لموظفي الجمارك المغاربة. سواء كنت تخطط لإجازة قصيرة أو إجازة أطول، تجعل هذه التطبيق من السهل حساب موعد عودتك إلى العمل بدقة.
+
+كيف يعمل
+
+يتبع التطبيق القواعد المعيارية لإدارة الجمارك المغربية. لديك 22 يوم عمل من الإجازة السنوية في السنة. عندما تطلب أيام إجازة، يتم إضافة عطلات نهاية الأسبوع تلقائيًا إلى فترة إجازتك ولا تحتسب ضمن الـ 22 يومًا. الأعياد الرسمية التي تقع خلال إجازتك يتم تضمينها تلقائيًا أيضًا ولا تحتسب من رصيد إجازاتك السنوية.
+
+على سبيل المثال، إذا طلبت 5 أيام عمل بدءًا من يوم الاثنين، سيقوم التطبيق بـ:
+• احتساب الـ 5 أيام عمل ضمن إجازاتك السنوية
+• إضافة عطلة نهاية الأسبوع (السبت والأحد) تلقائيًا
+• إضافة أي أعياد رسمية تحدث خلال هذه الفترة
+• إخبارك بالضبط متى تحتاج للعودة إلى العمل
+
+الميزات الرئيسية
+
+حاسبة الإجازات الذكية
+أدخل تاريخ البدء وعدد أيام العمل التي تريد أخذها. يحسب التطبيق على الفور تاريخ عودتك، ويوضح لك بالضبط عدد الأيام التقويمية التي ستكون فيها بعيدًا، بما في ذلك عطلات نهاية الأسبوع والأعياد.
+
+تقويم الأعياد المغربية
+احصل على تقويم كامل للأعياد الوطنية والدينية المغربية. يتضمن التطبيق تلقائيًا هذه الأعياد في حسابات إجازاتك، لذلك لن تضطر أبدًا للقلق بشأن تفويتها.
+
+تتبع الإجازات السنوية
+تابع عدد أيام الإجازة التي استخدمتها وكم تبقى على مدار السنة. يوضح لك التطبيق نظرة عامة واضحة على رصيد إجازاتك في لمحة.
+
+تاريخ الإجازات
+احفظ جميع حسابات إجازاتك للمرجع السهل. راجع الإجازات السابقة واطلع على الإجازات المخططة القادمة، كل ذلك في مكان واحد.
+
+حاسبة جدول العمل
+خطط لورديات عملك باستخدام حاسبة الجدول المدمجة. يدعم أنظمة توقيت مختلفة بما في ذلك جداول 12/24 و 12/24، 12/48 مع أوقات بدء قابلة للتخصيص.
+
+دعم متعدد اللغات
+التطبيق متاح بالعربية والفرنسية والإنجليزية. اختر لغتك المفضلة عند فتح التطبيق لأول مرة، وبدّل في أي وقت من الإعدادات.
+
+إعدادات قابلة للتخصيص
+اضبط أيام إجازاتك السنوية إذا لزم الأمر وخصص تفضيلات التطبيق الأخرى لتتناسب مع وضعك المحدد.
+
+لماذا تستخدم هذا التطبيق
+
+يمكن أن يكون تخطيط الإجازات معقدًا عندما تحتاج إلى مراعاة عطلات نهاية الأسبوع والأعياد. يتولى هذا التطبيق جميع هذه الحسابات نيابة عنك، مما يضمن أنك تعرف دائمًا بالضبط متى ستعود إلى العمل. لا مزيد من العد اليدوي أو فحص التقويم - فقط أدخل تواريخك واحصل على نتائج فورية ودقيقة.
+
+مثالي لموظفي الجمارك الذين يحتاجون إلى تخطيط طلبات إجازاتهم بدقة ويريدون الاستفادة القصوى من 22 يوم عملهم السنوية.
+
+حمّل الآن وابدأ في تخطيط إجازاتك بثقة!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MOTS-CLÉS / KEYWORDS / الكلمات المفتاحية
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Français:
+congé, calculateur, vacances, Maroc, douanes, jours fériés, planification, congés annuels, horaires
+
+English:
+vacation, calculator, congé, Morocco, customs, douanes, holiday, planning, annual leave, schedule
+
+العربية:
+إجازة، حاسبة، عطلة، المغرب، جمارك، أعياد، تخطيط، إجازات سنوية، جدول
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CATÉGORIE / CATEGORY / الفئة
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Principale : Productivité
+Secondaire : Utilitaires
+
+Primary: Productivity
+Secondary: Utilities
+
+الرئيسية: الإنتاجية
+الثانوية: الأدوات المساعدة
+
+═══════════════════════════════════════════════════════════════
+

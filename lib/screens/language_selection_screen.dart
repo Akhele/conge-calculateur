@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/language_provider.dart';
-import '../l10n/app_localizations.dart';
 import 'home_screen.dart';
 
 class LanguageSelectionScreen extends StatelessWidget {
@@ -131,7 +130,12 @@ class LanguageSelectionScreen extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: () async {
+          // Save language and wait for it to complete
           await languageProvider.setLanguage(languageCode);
+          
+          // Small delay to ensure iOS has time to persist preferences
+          await Future.delayed(const Duration(milliseconds: 100));
+          
           if (context.mounted) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const HomeScreen()),

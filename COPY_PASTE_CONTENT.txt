@@ -1,0 +1,90 @@
+═══════════════════════════════════════════════════════════════
+GOOGLE PLAY CONSOLE - CONTENU EN FRANÇAIS
+═══════════════════════════════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTES DE VERSION (Version 1.0.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Première version de Congé Calculateur !
+
+Calculez vos jours de congé sans effort avec la gestion automatique des week-ends et jours fériés. Parfait pour les agents des douanes marocaines qui doivent planifier leurs congés annuels avec précision.
+
+Fonctionnalités principales :
+• Calcul intelligent excluant les week-ends et jours fériés
+• Calendrier complet des fêtes marocaines
+• Suivi de vos jours de congé restants
+• Historique de vos congés sauvegardé
+• Calculateur d'horaires de travail pour la planification des équipes
+• Disponible en arabe, français et anglais
+
+Commencez à planifier vos congés en toute confiance !
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESCRIPTION COURTE (80 caractères maximum)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Calculateur de congés pour agents douanes marocaines avec gestion automatique
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESCRIPTION COMPLÈTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Congé Calculateur est un outil de planification de congés spécialement conçu pour les agents des douanes marocaines. Que vous planifiiez une courte pause ou des vacances plus longues, cette application facilite le calcul de votre date de retour au travail.
+
+COMMENT ÇA FONCTIONNE
+
+L'application suit les règles standard de l'administration des douanes marocaines. Vous disposez de 22 jours ouvrables de congé annuel par an. Lorsque vous demandez des jours de congé, les week-ends sont automatiquement ajoutés à votre période de congé et ne comptent pas dans vos 22 jours. Les jours fériés qui tombent pendant vos vacances sont également automatiquement inclus et ne comptent pas dans votre solde de congés annuels.
+
+Par exemple, si vous demandez 5 jours ouvrables à partir d'un lundi, l'application va :
+• Compter les 5 jours ouvrables dans vos congés annuels
+• Ajouter automatiquement le week-end (samedi et dimanche)
+• Ajouter tous les jours fériés qui surviennent pendant cette période
+• Vous indiquer exactement quand vous devez retourner au travail
+
+FONCTIONNALITÉS PRINCIPALES
+
+Calculateur de Congés Intelligent
+Entrez votre date de début et le nombre de jours ouvrables que vous souhaitez prendre. L'application calcule instantanément votre date de retour, vous montrant exactement combien de jours calendaires vous serez absent, y compris les week-ends et les jours fériés.
+
+Calendrier des Fêtes Marocaines
+Accédez à un calendrier complet des fêtes nationales et religieuses marocaines. L'application inclut automatiquement ces jours fériés dans vos calculs de congés, vous n'avez donc jamais à vous soucier de les manquer.
+
+Suivi des Congés Annuels
+Suivez le nombre de jours de congé que vous avez utilisés et combien il en reste tout au long de l'année. L'application vous montre un aperçu clair de votre solde de congés en un coup d'œil.
+
+Historique des Congés
+Enregistrez tous vos calculs de congés pour référence facile. Consultez les vacances passées et voyez les congés planifiés à venir, le tout au même endroit.
+
+Calculateur d'Horaires de Travail
+Planifiez vos équipes de travail avec le calculateur d'horaires intégré. Prend en charge différents systèmes d'horaires, y compris les horaires 12/24 et 12/24, 12/48 avec des heures de début personnalisables.
+
+Support Multi-Langues
+L'application est disponible en arabe, français et anglais. Choisissez votre langue préférée lors de la première ouverture de l'application et changez à tout moment depuis les paramètres.
+
+Paramètres Personnalisables
+Ajustez vos jours de congé annuels si nécessaire et personnalisez d'autres préférences de l'application pour correspondre à votre situation spécifique.
+
+POURQUOI UTILISER CETTE APPLICATION
+
+Planifier des vacances peut être compliqué lorsque vous devez tenir compte des week-ends et des jours fériés. Cette application s'occupe de tous ces calculs pour vous, vous assurant de toujours savoir exactement quand vous retournerez au travail. Plus besoin de compter manuellement ou de vérifier le calendrier - entrez simplement vos dates et obtenez des résultats instantanés et précis.
+
+Parfait pour les agents des douanes qui doivent planifier leurs demandes de congés avec précision et qui veulent tirer le meilleur parti de leurs 22 jours ouvrables annuels.
+
+Téléchargez maintenant et commencez à planifier vos vacances en toute confiance !
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MOTS-CLÉS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+congé, calculateur, vacances, Maroc, douanes, jours fériés, planification, congés annuels, horaires
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CATÉGORIE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Principale : Productivité
+Secondaire : Utilitaires
+
+═══════════════════════════════════════════════════════════════
+
