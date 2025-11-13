@@ -62,20 +62,48 @@ class VacationProvider extends ChangeNotifier {
 
   /// Check internet connectivity and load holidays
   Future<void> _checkConnectivityAndLoadHolidays() async {
+    // First, try to load cached holidays
+    await _loadCachedHolidays();
+    
+    // Check if holidays were already fetched today
+    final wereFetchedToday = await _wereHolidaysFetchedTodayAsync();
+    
+    if (wereFetchedToday && _holidays.isNotEmpty) {
+      // Holidays were fetched today and we have cached data - use it
+      debugPrint('Using cached holidays from today (${_holidays.length} holidays)');
+      _isLoading = false;
+      notifyListeners();
+      return;
+    }
+    
+    // Holidays not fetched today or cache is empty - fetch from API
+    debugPrint('Holidays not fetched today or cache empty - fetching from API');
+    
     // Check internet connection
     final hasInternet = await _checkInternetConnection();
     _hasInternetConnection = hasInternet;
     
-    // Always try to load holidays - will use fallback if API fails or no internet
+    // Load holidays from API (will use fallback if API fails or no internet)
     await _loadHolidays();
   }
 
   /// Set the current language for API calls
-  void setLanguage(String? language) {
+  Future<void> setLanguage(String? language) async {
     if (_currentLanguage != language) {
       _currentLanguage = language;
-      // Always reload holidays with new language (will use fallback if no internet)
-      _loadHolidays();
+      
+      // Check if holidays were already fetched today
+      final wereFetchedToday = await _wereHolidaysFetchedTodayAsync();
+      
+      if (wereFetchedToday && _holidays.isNotEmpty) {
+        // Holidays were fetched today - use cached data (language change doesn't require new API call)
+        debugPrint('Language changed but holidays already fetched today - using cached data');
+        notifyListeners();
+        return;
+      }
+      
+      // Holidays not fetched today or cache empty - reload holidays
+      await _loadHolidays();
     }
   }
 
@@ -102,14 +130,49 @@ class VacationProvider extends ChangeNotifier {
     }
   }
 
-  /// Save holidays to cache
+  /// Save holidays to cache with today's date
   Future<void> _saveCachedHolidays() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final holidaysJson = json.encode(_holidays.map((h) => h.toJson()).toList());
       await prefs.setString('cachedHolidays', holidaysJson);
+      
+      // Save today's date as the last fetch date
+      await prefs.setString('holidaysLastFetchDate', DateTime.now().toIso8601String());
+      debugPrint('Saved holidays and marked fetch date as today');
     } catch (e) {
       debugPrint('Error saving cached holidays: $e');
+    }
+  }
+  
+  /// Check if holidays were fetched today (async version)
+  Future<bool> _wereHolidaysFetchedTodayAsync() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final lastFetchDateStr = prefs.getString('holidaysLastFetchDate');
+      if (lastFetchDateStr == null) {
+        debugPrint('No last fetch date found - will fetch from API');
+        return false;
+      }
+      
+      final lastFetchDate = DateTime.parse(lastFetchDateStr);
+      final today = DateTime.now();
+      
+      // Check if last fetch was today (same day, month, year)
+      final isToday = lastFetchDate.year == today.year &&
+                     lastFetchDate.month == today.month &&
+                     lastFetchDate.day == today.day;
+      
+      if (isToday) {
+        debugPrint('Holidays were already fetched today (${lastFetchDate.toIso8601String()}) - using cached data');
+      } else {
+        debugPrint('Last fetch was on ${lastFetchDate.toIso8601String()} - will fetch from API');
+      }
+      
+      return isToday;
+    } catch (e) {
+      debugPrint('Error checking fetch date: $e');
+      return false;
     }
   }
 

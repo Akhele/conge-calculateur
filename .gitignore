@@ -5,13 +5,20 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # API Keys (sensitive data)
 lib/config/api_keys.dart
+
+# Android signing keys (sensitive data)
+android/key.properties
+android/*.jks
+android/*.keystore
 
 # IntelliJ related
 *.iml
