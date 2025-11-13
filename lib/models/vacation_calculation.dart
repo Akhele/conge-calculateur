@@ -6,6 +6,7 @@ class VacationCalculation {
   final int weekendDays;
   final int holidayDays;
   final List<DateTime> holidays;
+  final List<DateTime> weekendHolidays; // Holidays that fall on weekends (not counted)
 
   VacationCalculation({
     required this.startDate,
@@ -15,6 +16,7 @@ class VacationCalculation {
     required this.weekendDays,
     required this.holidayDays,
     required this.holidays,
+    this.weekendHolidays = const [],
   });
 
   Map<String, dynamic> toJson() {
@@ -26,6 +28,7 @@ class VacationCalculation {
       'weekendDays': weekendDays,
       'holidayDays': holidayDays,
       'holidays': holidays.map((d) => d.toIso8601String()).toList(),
+      'weekendHolidays': weekendHolidays.map((d) => d.toIso8601String()).toList(),
     };
   }
 
@@ -40,6 +43,11 @@ class VacationCalculation {
       holidays: (json['holidays'] as List)
           .map((d) => DateTime.parse(d))
           .toList(),
+      weekendHolidays: json['weekendHolidays'] != null
+          ? (json['weekendHolidays'] as List)
+              .map((d) => DateTime.parse(d))
+              .toList()
+          : [],
     );
   }
 }

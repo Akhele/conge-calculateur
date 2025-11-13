@@ -73,4 +73,3 @@ static const String calendarificApiKey = 'YOUR_API_KEY_HERE';
 ## Questions?
 
 Contact the project maintainer or check the main [README.md](README.md) for more information.
-
