@@ -3,13 +3,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'screens/home_screen.dart';
+import 'screens/language_selection_screen.dart';
 import 'services/vacation_provider.dart';
+import 'services/language_provider.dart';
+import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize French locale for date formatting
-  await initializeDateFormatting('fr_FR', null);
   
   runApp(const MyApp());
 }
@@ -19,33 +19,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => VacationProvider(),
-      child: MaterialApp(
-        title: 'Calculateur de Congé',
-        debugShowCheckedModeBanner: false,
-        locale: const Locale('fr', 'FR'),
-        supportedLocales: const [
-          Locale('fr', 'FR'),
-          Locale('en', 'US'),
-        ],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF00BFFF), // Deep sky blue
-            brightness: Brightness.light,
-          ),
-          useMaterial3: true,
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-            elevation: 0,
-          ),
-        ),
-        home: const HomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ChangeNotifierProvider(create: (_) => VacationProvider()),
+      ],
+      child: Consumer<LanguageProvider>(
+        builder: (context, languageProvider, child) {
+          return MaterialApp(
+            title: 'Calculateur de Congé',
+            debugShowCheckedModeBanner: false,
+            locale: languageProvider.currentLocale,
+            supportedLocales: const [
+              Locale('ar'),
+              Locale('fr', 'FR'),
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: const [
+              AppLocalizationsDelegate(),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xFF00BFFF), // Deep sky blue
+                brightness: Brightness.light,
+              ),
+              useMaterial3: true,
+              appBarTheme: const AppBarTheme(
+                centerTitle: true,
+                elevation: 0,
+              ),
+            ),
+            home: languageProvider.isFirstLaunch
+                ? const LanguageSelectionScreen()
+                : const HomeScreen(),
+          );
+        },
       ),
     );
   }

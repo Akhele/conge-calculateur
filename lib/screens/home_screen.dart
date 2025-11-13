@@ -1,22 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/vacation_provider.dart';
+import '../l10n/app_localizations.dart';
+import '../widgets/no_internet_dialog.dart';
 import 'calculator_screen.dart';
 import 'history_screen.dart';
 import 'holidays_screen.dart';
+import 'settings_screen.dart';
+import 'work_schedule_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _hasShownNoInternetDialog = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Check connectivity after first frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkInternetAndShowDialog();
+    });
+  }
+
+  Future<void> _checkInternetAndShowDialog() async {
+    final provider = Provider.of<VacationProvider>(context, listen: false);
+    
+    // Wait for connectivity check and holidays loading to complete
+    await Future.delayed(const Duration(milliseconds: 1500));
+    
+    if (!provider.hasInternetConnection && !_hasShownNoInternetDialog && mounted) {
+      _hasShownNoInternetDialog = true;
+      NoInternetDialog.show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Calculateur de Congé',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          AppLocalizations.of(context).appTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              );
+            },
+            tooltip: AppLocalizations.of(context).settings,
+          ),
+        ],
       ),
       body: Consumer<VacationProvider>(
         builder: (context, provider, child) {
@@ -33,8 +79,8 @@ class HomeScreen extends StatelessWidget {
                 _buildActionButton(
                   context,
                   icon: Icons.calculate,
-                  title: 'Calculer un Congé',
-                  subtitle: 'Planifier vos jours de repos',
+                  title: AppLocalizations.of(context).calculateVacation,
+                  subtitle: AppLocalizations.of(context).planYourRestDays,
                   color: Theme.of(context).colorScheme.primary,
                   onTap: () {
                     Navigator.push(
@@ -50,8 +96,8 @@ class HomeScreen extends StatelessWidget {
                 _buildActionButton(
                   context,
                   icon: Icons.history,
-                  title: 'Historique',
-                  subtitle: 'Voir vos congés passés',
+                  title: AppLocalizations.of(context).history,
+                  subtitle: AppLocalizations.of(context).viewPastVacations,
                   color: Theme.of(context).colorScheme.secondary,
                   onTap: () {
                     Navigator.push(
@@ -67,8 +113,8 @@ class HomeScreen extends StatelessWidget {
                 _buildActionButton(
                   context,
                   icon: Icons.event,
-                  title: 'Jours Fériés',
-                  subtitle: 'Calendrier des fêtes au Maroc',
+                  title: AppLocalizations.of(context).holidays,
+                  subtitle: AppLocalizations.of(context).moroccanHolidaysCalendar,
                   color: Theme.of(context).colorScheme.tertiary,
                   onTap: () {
                     Navigator.push(
@@ -79,13 +125,30 @@ class HomeScreen extends StatelessWidget {
                     );
                   },
                 ),
+                const SizedBox(height: 12),
+
+                _buildActionButton(
+                  context,
+                  icon: Icons.schedule,
+                  title: 'Planning de Travail',
+                  subtitle: 'Vérifier votre planning selon votre système de timing',
+                  color: Colors.deepPurple,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const WorkScheduleScreen(),
+                      ),
+                    );
+                  },
+                ),
                 const SizedBox(height: 24),
 
                 // Reset button
                 OutlinedButton.icon(
                   onPressed: () => _showResetDialog(context, provider),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Réinitialiser l\'année'),
+                  label: Text(AppLocalizations.of(context).resetYear),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.all(16),
                   ),
@@ -129,7 +192,7 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Jours Restants',
+                        AppLocalizations.of(context).remainingDays,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               color: Theme.of(context).colorScheme.onPrimaryContainer,
                             ),
@@ -142,11 +205,61 @@ class HomeScreen extends StatelessWidget {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                       ),
-                      Text(
-                        'sur $totalDays jours',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${AppLocalizations.of(context).outOfDays} $totalDays ${AppLocalizations.of(context).days}',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
+                                ),
+                          ),
+                          const SizedBox(width: 12),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SettingsScreen(),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.5),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.edit,
+                                      size: 18,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      AppLocalizations.of(context).modify,
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -192,7 +305,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     _buildStatItem(
                       context,
-                      'Utilisés',
+                      AppLocalizations.of(context).used,
                       '$usedDays',
                       Icons.check_circle,
                     ),
@@ -203,7 +316,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     _buildStatItem(
                       context,
-                      'Total',
+                      AppLocalizations.of(context).total,
                       '$totalDays',
                       Icons.calendar_today,
                     ),
@@ -296,28 +409,26 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _showResetDialog(BuildContext context, VacationProvider provider) {
+    final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Réinitialiser l\'année'),
-        content: const Text(
-          'Êtes-vous sûr de vouloir réinitialiser tous vos congés ? '
-          'Cette action est irréversible.',
-        ),
+        title: Text(l10n.resetYearTitle),
+        content: Text(l10n.resetYearMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () {
               provider.resetYear();
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Année réinitialisée avec succès')),
+                SnackBar(content: Text(l10n.yearResetSuccessfully)),
               );
             },
-            child: const Text('Réinitialiser'),
+            child: Text(l10n.reset),
           ),
         ],
       ),

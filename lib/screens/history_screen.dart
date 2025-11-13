@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../services/vacation_provider.dart';
+import '../services/language_provider.dart';
+import '../models/holiday.dart';
+import '../services/holiday_service.dart';
+import '../l10n/app_localizations.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -10,11 +14,12 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Historique des Congés'),
+        title: Text(AppLocalizations.of(context).vacationHistory),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
-      body: Consumer<VacationProvider>(
-        builder: (context, provider, child) {
+      body: Consumer2<VacationProvider, LanguageProvider>(
+        builder: (context, provider, languageProvider, child) {
+          final currentLanguage = languageProvider.currentLanguage;
           if (provider.history.isEmpty) {
             return Center(
               child: Column(
@@ -27,14 +32,14 @@ class HistoryScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Aucun congé enregistré',
+                    AppLocalizations.of(context).noVacationsRecorded,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Colors.grey[600],
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Vos congés confirmés apparaîtront ici',
+                    AppLocalizations.of(context).confirmedVacationsWillAppearHere,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.grey[500],
                         ),
@@ -56,7 +61,7 @@ class HistoryScreen extends StatelessWidget {
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
                 child: InkWell(
-                  onTap: () => _showDetailsDialog(context, calculation),
+                  onTap: () => _showDetailsDialog(context, calculation, provider, currentLanguage),
                   borderRadius: BorderRadius.circular(12),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -94,17 +99,17 @@ class HistoryScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${calculation.requestedDays} jours ouvrables',
+                                    '${calculation.requestedDays} ${AppLocalizations.of(context).workingDays}',
                                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                           fontWeight: FontWeight.bold,
                                         ),
                                   ),
                                   Text(
                                     isOngoing
-                                        ? 'En cours'
+                                        ? AppLocalizations.of(context).ongoing
                                         : isPast
-                                            ? 'Terminé'
-                                            : 'À venir',
+                                            ? AppLocalizations.of(context).completed
+                                            : AppLocalizations.of(context).upcoming,
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                           color: isOngoing
                                               ? Colors.green[700]
@@ -136,9 +141,10 @@ class HistoryScreen extends StatelessWidget {
                             Expanded(
                               child: _buildDateInfo(
                                 context,
-                                'Début',
+                                AppLocalizations.of(context).startDate,
                                 calculation.startDate,
                                 Icons.play_arrow,
+                                currentLanguage,
                               ),
                             ),
                             Container(
@@ -149,9 +155,10 @@ class HistoryScreen extends StatelessWidget {
                             Expanded(
                               child: _buildDateInfo(
                                 context,
-                                'Retour',
+                                AppLocalizations.of(context).returnToWorkDate,
                                 calculation.returnDate,
                                 Icons.work,
+                                currentLanguage,
                               ),
                             ),
                           ],
@@ -169,17 +176,17 @@ class HistoryScreen extends StatelessWidget {
                               _buildStatChip(
                                 context,
                                 '${calculation.totalCalendarDays}j',
-                                'Total',
+                                AppLocalizations.of(context).total,
                               ),
                               _buildStatChip(
                                 context,
                                 '${calculation.weekendDays}',
-                                'Week-ends',
+                                AppLocalizations.of(context).weekendsIncluded,
                               ),
                               _buildStatChip(
                                 context,
                                 '${calculation.holidayDays}',
-                                'Fériés',
+                                AppLocalizations.of(context).holidaysIncluded,
                               ),
                             ],
                           ),
@@ -196,7 +203,7 @@ class HistoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDateInfo(BuildContext context, String label, DateTime date, IconData icon) {
+  Widget _buildDateInfo(BuildContext context, String label, DateTime date, IconData icon, String language) {
     return Column(
       children: [
         Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
@@ -206,7 +213,7 @@ class HistoryScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.bodySmall,
         ),
         Text(
-          DateFormat('d MMM', 'fr_FR').format(date),
+          _formatDateWithWesternNumbers(date, 'd MMM', language),
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -233,31 +240,154 @@ class HistoryScreen extends StatelessWidget {
     );
   }
 
-  void _showDetailsDialog(BuildContext context, calculation) {
+  void _showDetailsDialog(BuildContext context, calculation, VacationProvider provider, String language) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Détails du congé'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildDetailRow('Date de début', DateFormat('d MMMM yyyy', 'fr_FR').format(calculation.startDate)),
-            _buildDetailRow('Date de retour', DateFormat('d MMMM yyyy', 'fr_FR').format(calculation.returnDate)),
-            _buildDetailRow('Jours ouvrables', '${calculation.requestedDays} jours'),
-            _buildDetailRow('Durée totale', '${calculation.totalCalendarDays} jours'),
-            _buildDetailRow('Week-ends', '${calculation.weekendDays} jours'),
-            _buildDetailRow('Jours fériés', '${calculation.holidayDays} jours'),
-          ],
+        title: Text(AppLocalizations.of(context).vacationDetails),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDetailRow(AppLocalizations.of(context).startDate, _formatDateWithWesternNumbers(calculation.startDate, 'd MMMM yyyy', language)),
+              _buildDetailRow(AppLocalizations.of(context).returnToWorkDate, _formatDateWithWesternNumbers(calculation.returnDate, 'd MMMM yyyy', language)),
+              _buildDetailRow(AppLocalizations.of(context).requestedWorkingDays, '${calculation.requestedDays} ${AppLocalizations.of(context).days}'),
+              _buildDetailRow(AppLocalizations.of(context).totalDuration, '${calculation.totalCalendarDays} ${AppLocalizations.of(context).days}'),
+              _buildDetailRow(AppLocalizations.of(context).weekendsIncluded, '${calculation.weekendDays} ${AppLocalizations.of(context).days}'),
+              _buildDetailRow(AppLocalizations.of(context).holidaysIncluded, '${calculation.holidayDays} ${AppLocalizations.of(context).days}'),
+              // Show holidays if available
+              if (calculation.holidays.isNotEmpty || calculation.weekendHolidays.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                const Divider(),
+                const SizedBox(height: 8),
+                Text(
+                  '${AppLocalizations.of(context).holidaysDuringVacation}:',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                ...calculation.holidays.map((holidayDate) {
+                  // Try to find holiday in provider's list first
+                  Holiday? holidayInfo;
+                  try {
+                    holidayInfo = provider.holidays.firstWhere(
+                      (h) => h.date.year == holidayDate.year &&
+                             h.date.month == holidayDate.month &&
+                             h.date.day == holidayDate.day,
+                    );
+                  } catch (e) {
+                    // If not found, get from fallback data with current language
+                    holidayInfo = _getHolidayFromFallback(holidayDate, language);
+                  }
+                  
+                  if (holidayInfo == null) {
+                    return const SizedBox.shrink();
+                  }
+                  
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: Text(
+                      '${_formatDateWithWesternNumbers(holidayDate, 'd MMM', language)} - ${_getHolidayName(holidayInfo, language)}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  );
+                }),
+                ...calculation.weekendHolidays.map((holidayDate) {
+                  // Try to find holiday in provider's list first
+                  Holiday? holidayInfo;
+                  try {
+                    holidayInfo = provider.holidays.firstWhere(
+                      (h) => h.date.year == holidayDate.year &&
+                             h.date.month == holidayDate.month &&
+                             h.date.day == holidayDate.day,
+                    );
+                  } catch (e) {
+                    // If not found, get from fallback data with current language
+                    holidayInfo = _getHolidayFromFallback(holidayDate, language);
+                  }
+                  
+                  if (holidayInfo == null) {
+                    return const SizedBox.shrink();
+                  }
+                  
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: Text(
+                      '${_formatDateWithWesternNumbers(holidayDate, 'd MMM', language)} - ${_getHolidayName(holidayInfo, language)} (Week-end)',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.grey[600],
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                  );
+                }),
+              ],
+            ],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Fermer'),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
         ],
       ),
     );
+  }
+
+  /// Get holiday name based on selected language
+  String _getHolidayName(Holiday holiday, String language) {
+    if (language == 'ar') {
+      return holiday.nameAr.isNotEmpty ? holiday.nameAr : holiday.name;
+    } else if (language == 'fr') {
+      // For French, prefer name (which should be in French) over nameAr
+      return holiday.name.isNotEmpty ? holiday.name : holiday.nameAr;
+    }
+    // For English or other languages, use name
+    return holiday.name.isNotEmpty ? holiday.name : holiday.nameAr;
+  }
+
+  /// Get holiday from fallback data if not found in provider's list
+  Holiday? _getHolidayFromFallback(DateTime holidayDate, String language) {
+    try {
+      final year = holidayDate.year;
+      // Get fallback holidays for this year
+      final fallbackHolidays = HolidayService.getFallbackHolidays(year, language: language);
+      final islamicHolidays = HolidayService.getIslamicHolidaysForYear(year, language: language);
+      
+      // Search in fallback holidays
+      for (var holiday in [...fallbackHolidays, ...islamicHolidays]) {
+        if (holiday.date.year == holidayDate.year &&
+            holiday.date.month == holidayDate.month &&
+            holiday.date.day == holidayDate.day) {
+          return holiday;
+        }
+      }
+    } catch (e) {
+      // If fallback fails, return null
+    }
+    return null;
+  }
+
+  /// Format date with locale but ensure numbers are Western numerals (0-9)
+  String _formatDateWithWesternNumbers(DateTime date, String format, String language) {
+    final locale = language == 'ar' ? 'ar' : language == 'fr' ? 'fr_FR' : 'en_US';
+    final formatted = DateFormat(format, locale).format(date);
+    
+    // Replace Arabic-Indic numerals with Western numerals
+    return formatted
+        .replaceAll('٠', '0')
+        .replaceAll('١', '1')
+        .replaceAll('٢', '2')
+        .replaceAll('٣', '3')
+        .replaceAll('٤', '4')
+        .replaceAll('٥', '5')
+        .replaceAll('٦', '6')
+        .replaceAll('٧', '7')
+        .replaceAll('٨', '8')
+        .replaceAll('٩', '9');
   }
 
   Widget _buildDetailRow(String label, String value) {
@@ -277,23 +407,23 @@ class HistoryScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Supprimer le congé'),
-        content: const Text('Êtes-vous sûr de vouloir supprimer ce congé de l\'historique ?'),
+        title: Text(AppLocalizations.of(context).deleteVacation),
+        content: Text(AppLocalizations.of(context).areYouSureDeleteVacation),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
           FilledButton(
             onPressed: () {
               provider.deleteHistoryItem(index);
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Congé supprimé')),
+                SnackBar(content: Text(AppLocalizations.of(context).vacationDeleted)),
               );
             },
             style: FilledButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Supprimer'),
+            child: Text(AppLocalizations.of(context).delete),
           ),
         ],
       ),

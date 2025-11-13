@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../services/vacation_provider.dart';
+import '../l10n/app_localizations.dart';
 import 'result_screen.dart';
 
 class CalculatorScreen extends StatefulWidget {
@@ -15,12 +16,36 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   DateTime _selectedDate = DateTime.now();
   int _requestedDays = 5;
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _daysController = TextEditingController();
+  
+  @override
+  void initState() {
+    super.initState();
+    _daysController.text = _requestedDays.toString();
+  }
+  
+  @override
+  void dispose() {
+    _daysController.dispose();
+    super.dispose();
+  }
+  
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Update controller when remaining days change (e.g., after settings change)
+    final provider = Provider.of<VacationProvider>(context, listen: false);
+    if (_requestedDays > provider.remainingDays) {
+      _requestedDays = provider.remainingDays;
+      _daysController.text = _requestedDays.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calculer un Congé'),
+        title: Text(AppLocalizations.of(context).calculateVacationTitle),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
       body: Consumer<VacationProvider>(
@@ -50,12 +75,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'Jours ouvrables disponibles',
+                            AppLocalizations.of(context).workingDaysAvailable,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            '${provider.remainingDays} jours',
+                            '${provider.remainingDays} ${AppLocalizations.of(context).days}',
                             style: Theme.of(context).textTheme.displayMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.primary,
@@ -138,7 +163,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Nombre de jours ouvrables',
+                            AppLocalizations.of(context).numberOfWorkingDays,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -148,32 +173,84 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             children: [
                               IconButton(
                                 onPressed: _requestedDays > 1
-                                    ? () => setState(() => _requestedDays--)
+                                    ? () {
+                                        setState(() {
+                                          _requestedDays--;
+                                          _daysController.text = _requestedDays.toString();
+                                        });
+                                      }
                                     : null,
                                 icon: const Icon(Icons.remove_circle_outline),
                                 iconSize: 32,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                               Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primaryContainer,
-                                    borderRadius: BorderRadius.circular(8),
+                                child: TextField(
+                                  controller: _daysController,
+                                  keyboardType: TextInputType.number,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).colorScheme.primary,
+                                      ),
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Theme.of(context).colorScheme.primaryContainer,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide(
+                                        color: Theme.of(context).colorScheme.primary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
                                   ),
-                                  child: Text(
-                                    '$_requestedDays',
-                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.primary,
-                                        ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  onChanged: (value) {
+                                    final numValue = int.tryParse(value);
+                                    if (numValue != null) {
+                                      final clampedValue = numValue.clamp(1, provider.remainingDays);
+                                      if (clampedValue != numValue) {
+                                        _daysController.text = clampedValue.toString();
+                                        _daysController.selection = TextSelection.fromPosition(
+                                          TextPosition(offset: _daysController.text.length),
+                                        );
+                                      }
+                                      setState(() {
+                                        _requestedDays = clampedValue;
+                                      });
+                                    } else if (value.isEmpty) {
+                                      // Allow empty temporarily while typing
+                                    }
+                                  },
+                                  onSubmitted: (value) {
+                                    final numValue = int.tryParse(value);
+                                    if (numValue == null || numValue < 1) {
+                                      _daysController.text = '1';
+                                      setState(() => _requestedDays = 1);
+                                    } else {
+                                      final clampedValue = numValue.clamp(1, provider.remainingDays);
+                                      _daysController.text = clampedValue.toString();
+                                      setState(() => _requestedDays = clampedValue);
+                                    }
+                                  },
                                 ),
                               ),
                               IconButton(
                                 onPressed: _requestedDays < provider.remainingDays
-                                    ? () => setState(() => _requestedDays++)
+                                    ? () {
+                                        setState(() {
+                                          _requestedDays++;
+                                          _daysController.text = _requestedDays.toString();
+                                        });
+                                      }
                                     : null,
                                 icon: const Icon(Icons.add_circle_outline),
                                 iconSize: 32,
@@ -183,7 +260,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Jours ouvrables uniquement (Lun-Ven)',
+                            AppLocalizations.of(context).workingDaysOnly,
                             style: Theme.of(context).textTheme.bodySmall,
                             textAlign: TextAlign.center,
                           ),
