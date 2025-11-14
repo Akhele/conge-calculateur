@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_fr.dart';
 import 'app_localizations_ar.dart';
@@ -95,6 +94,11 @@ abstract class AppLocalizations {
   String get language;
   String get selectLanguage;
   String get languageChanged;
+
+  // About Dialog
+  String get aboutAppTitle;
+  String get aboutAppMessage;
+  String get aboutAppContact;
 
   // Common
   String get monday;

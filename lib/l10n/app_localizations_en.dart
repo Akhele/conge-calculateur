@@ -267,5 +267,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get december => 'December';
+
+  @override
+  String get aboutAppTitle => 'About This App';
+
+  @override
+  String get aboutAppMessage => 'I developed this app to help my colleagues calculate their annual leave and work timing. This app is completely free - I do not receive any money from it, and I do not collect any data from users.';
+
+  @override
+  String get aboutAppContact => 'For any suggestions, modifications, or errors, feel free to contact me at the email contact@akhele.com';
 }
 

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../services/vacation_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/no_internet_dialog.dart';
+import '../widgets/about_dialog.dart';
 import 'calculator_screen.dart';
 import 'history_screen.dart';
 import 'holidays_screen.dart';
@@ -49,6 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        leading: IconButton(
+          icon: const Icon(Icons.info_outline),
+          onPressed: () {
+            AppAboutDialog.show(context);
+          },
+          tooltip: AppLocalizations.of(context).aboutAppTitle,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

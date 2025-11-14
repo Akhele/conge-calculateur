@@ -267,5 +267,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get december => 'Décembre';
+
+  @override
+  String get aboutAppTitle => 'À propos de cette application';
+
+  @override
+  String get aboutAppMessage => 'J\'ai développé cette application pour aider mes collègues à calculer leurs congés annuels et leur planning de travail. Cette application est entièrement gratuite - je ne reçois aucun argent et je ne collecte aucune donnée des utilisateurs.';
+
+  @override
+  String get aboutAppContact => 'Pour toute suggestion, modification ou erreur, n\'hésitez pas à me contacter à l\'email contact@akhele.com';
 }
 
