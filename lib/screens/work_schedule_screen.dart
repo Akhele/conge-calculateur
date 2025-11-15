@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 enum TimingSystem {
   twelveTwentyFour,
@@ -33,6 +34,7 @@ class _WorkScheduleScreenState extends State<WorkScheduleScreen> {
   WorkType _currentWorkType = WorkType.jour;
   late DateTime _todayDate;
   DateTime _selectedDate = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
   TimeOfDay _startTime = const TimeOfDay(hour: 9, minute: 0);
 
   @override
@@ -390,6 +392,30 @@ class _WorkScheduleScreenState extends State<WorkScheduleScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 24),
+
+            // Calendar view
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Calendrier de Planning',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildWorkScheduleCalendar(),
+                    const SizedBox(height: 12),
+                    _buildLegend(),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -608,8 +634,244 @@ class _WorkScheduleScreenState extends State<WorkScheduleScreen> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
+        _focusedDay = picked;
       });
     }
+  }
+
+  Widget _buildWorkScheduleCalendar() {
+    return TableCalendar<DayStatus>(
+      firstDay: DateTime.now().subtract(const Duration(days: 365)),
+      lastDay: DateTime.now().add(const Duration(days: 365)),
+      focusedDay: _focusedDay,
+      selectedDayPredicate: (day) => isSameDay(_selectedDate, day),
+      locale: 'fr_FR',
+      calendarFormat: CalendarFormat.month,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      headerStyle: const HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
+      ),
+      calendarStyle: CalendarStyle(
+        outsideDaysVisible: false,
+        defaultTextStyle: const TextStyle(fontSize: 14),
+        weekendTextStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
+        selectedDecoration: const BoxDecoration(
+          shape: BoxShape.circle,
+        ),
+        todayDecoration: const BoxDecoration(
+          shape: BoxShape.circle,
+        ),
+        markerDecoration: const BoxDecoration(
+          shape: BoxShape.circle,
+        ),
+      ),
+      onDaySelected: (selectedDay, focusedDay) {
+        setState(() {
+          _selectedDate = selectedDay;
+          _focusedDay = focusedDay;
+        });
+      },
+      onPageChanged: (focusedDay) {
+        _focusedDay = focusedDay;
+      },
+      calendarBuilders: CalendarBuilders(
+        defaultBuilder: (context, date, events) {
+          return _buildDayCell(context, date);
+        },
+        todayBuilder: (context, date, events) {
+          return _buildDayCell(context, date, isToday: true);
+        },
+        selectedBuilder: (context, date, events) {
+          return _buildDayCell(context, date, isSelected: true);
+        },
+      ),
+    );
+  }
+
+  Widget _buildDayCell(BuildContext context, DateTime date, {bool isToday = false, bool isSelected = false}) {
+    final dayStatus = _calculateDayStatus(date);
+    final isSameMonth = date.month == _focusedDay.month;
+    
+    Color backgroundColor;
+    Color textColor;
+    String label = '';
+    
+    if (!isSameMonth) {
+      backgroundColor = Colors.grey[100]!;
+      textColor = Colors.grey[400]!;
+    } else {
+      switch (dayStatus) {
+        case DayStatus.jour:
+          backgroundColor = Colors.orange.shade300;
+          textColor = Colors.white;
+          label = 'J';
+          break;
+        case DayStatus.nuit:
+          backgroundColor = Colors.indigo.shade400;
+          textColor = Colors.white;
+          label = 'N';
+          break;
+        case DayStatus.journeeCouverte:
+          backgroundColor = Colors.green.shade400;
+          textColor = Colors.white;
+          label = 'R';
+          break;
+        case DayStatus.reposCompensateur:
+          backgroundColor = Colors.teal.shade400;
+          textColor = Colors.white;
+          label = 'RC';
+          break;
+      }
+    }
+    
+    if (isSelected) {
+      backgroundColor = Theme.of(context).colorScheme.primary;
+      textColor = Colors.white;
+    } else if (isToday) {
+      // Add a ring around today
+      return Container(
+        margin: const EdgeInsets.all(2.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primary,
+            width: 3,
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${date.day}',
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                if (isSameMonth && label.isNotEmpty)
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    
+    return Container(
+      margin: const EdgeInsets.all(2.0),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '${date.day}',
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            if (isSameMonth && label.isNotEmpty)
+              Text(
+                label,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLegend() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Légende:',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 20,
+            runSpacing: 12,
+            children: [
+              _buildLegendItem('Jour', Colors.orange, 'J'),
+              _buildLegendItem('Nuit', Colors.indigo, 'N'),
+              _buildLegendItem('Repos', Colors.green, 'R'),
+              if (_selectedTiming == TimingSystem.twelveTwentyFourTwelveFortyEight)
+                _buildLegendItem('Repos Compensateur', Colors.teal, 'RC'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLegendItem(String label, MaterialColor color, String abbreviation) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: color.shade300,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Text(
+              abbreviation,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
   }
 }
 
