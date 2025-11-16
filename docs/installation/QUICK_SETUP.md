@@ -3,7 +3,7 @@
 ## One Command to Make Everything Ready
 
 ```bash
-bash setup_play_store.sh
+bash docs/development/setup_play_store.sh
 ```
 
 **That's it!** The script will guide you through everything.

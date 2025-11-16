@@ -1,140 +1,141 @@
-# Installation et Démarrage
+# Installation and Getting Started
 
-## ✅ Prérequis
+## ✅ Prerequisites
 
-Votre environnement Flutter est prêt :
-- ✓ Flutter SDK 3.32.8 installé
-- ✓ Android Studio configuré
-- ✓ VS Code avec extensions Flutter
-- ✓ Chrome pour le développement web
+Your Flutter environment is ready:
+- ✓ Flutter SDK 3.32.8 installed
+- ✓ Android Studio configured
+- ✓ VS Code with Flutter extensions
+- ✓ Chrome for web development
 
-## 🚀 Démarrage Rapide
+## 🚀 Quick Start
 
-### 1. Vérifier l'installation
+### 1. Verify Installation
 
-Les dépendances sont déjà installées. Pour vérifier :
+Dependencies are already installed. To verify:
 
 ```bash
 cd /Users/macbook/Desktop/flutterProjects/conge-calculateur
 flutter pub get
 ```
 
-### 2. Lancer l'application
+### 2. Run the Application
 
-#### Option A : Sur un émulateur Android
+#### Option A: On Android Emulator
 ```bash
 flutter run
 ```
 
-#### Option B : Sur Chrome (Web)
+#### Option B: On Chrome (Web)
 ```bash
 flutter run -d chrome
 ```
 
-#### Option C : Sur un appareil physique
-1. Connectez votre téléphone via USB
-2. Activez le mode développeur sur votre téléphone
-3. Exécutez :
+#### Option C: On Physical Device
+1. Connect your phone via USB
+2. Enable developer mode on your phone
+3. Run:
 ```bash
-flutter devices  # Pour voir les appareils disponibles
-flutter run      # Pour lancer sur l'appareil connecté
+flutter devices  # To see available devices
+flutter run      # To launch on connected device
 ```
 
-### 3. Compiler l'application
+### 3. Build the Application
 
-#### Pour Android (APK)
+#### For Android (APK)
 ```bash
 flutter build apk --release
 ```
-Le fichier APK sera dans : `build/app/outputs/flutter-apk/app-release.apk`
+The APK file will be in: `build/app/outputs/flutter-apk/app-release.apk`
 
-#### Pour Android (App Bundle - Google Play)
+#### For Android (App Bundle - Google Play)
 ```bash
 flutter build appbundle --release
 ```
 
-#### Pour iOS (nécessite un Mac avec Xcode)
+#### For iOS (requires Mac with Xcode)
 ```bash
 flutter build ios --release
 ```
 
-## 🧪 Tests
+## 🧪 Testing
 
-### Exécuter les tests
+### Run Tests
 ```bash
 flutter test
 ```
 
-### Analyse du code
+### Code Analysis
 ```bash
 flutter analyze
 ```
 
-## 📱 Structure du Projet
+## 📱 Project Structure
 
 ```
 conge-calculateur/
 ├── lib/
-│   ├── main.dart                    # Point d'entrée
-│   ├── models/                      # Modèles de données
+│   ├── main.dart                    # Entry point
+│   ├── models/                      # Data models
 │   │   ├── holiday.dart
 │   │   └── vacation_calculation.dart
-│   ├── screens/                     # Écrans de l'application
+│   ├── screens/                     # Application screens
 │   │   ├── home_screen.dart
 │   │   ├── calculator_screen.dart
 │   │   ├── result_screen.dart
 │   │   ├── history_screen.dart
 │   │   └── holidays_screen.dart
-│   └── services/                    # Logique métier
+│   └── services/                    # Business logic
 │       ├── holiday_service.dart
 │       ├── vacation_calculator.dart
 │       └── vacation_provider.dart
-├── test/                            # Tests unitaires
-├── pubspec.yaml                     # Dépendances
-├── README.md                        # Documentation technique
-├── GUIDE_UTILISATION.md            # Guide utilisateur
-└── INSTALLATION.md                 # Ce fichier
+├── test/                            # Unit tests
+├── pubspec.yaml                     # Dependencies
+├── README.md                        # Technical documentation
+└── docs/                            # Documentation folder
 ```
 
-## 🔧 Configuration Optionnelle
+## 🔧 Optional Configuration
 
-### API des Jours Fériés (Optionnel)
+### Holiday API (Optional)
 
-L'application fonctionne avec des données intégrées pour 2024-2025. Pour une intégration API :
+The application works with built-in data for 2024-2025. For API integration:
 
-1. Obtenez une clé API gratuite sur [Calendarific](https://calendarific.com/)
-2. Ouvrez `lib/services/holiday_service.dart`
-3. Remplacez `YOUR_API_KEY_HERE` par votre clé :
+1. Get a free API key from [Calendarific](https://calendarific.com/)
+2. Open `lib/services/holiday_service.dart`
+3. Replace `YOUR_API_KEY_HERE` with your key:
 
 ```dart
-static const String apiKey = 'votre_clé_api';
+static const String apiKey = 'your_api_key';
 ```
 
-### Personnalisation
+### Customization
 
-#### Changer le nombre de jours annuels
-Éditez `lib/services/vacation_provider.dart` :
+#### Change Annual Days
+Edit `lib/services/vacation_provider.dart`:
 ```dart
-final int _totalAnnualDays = 22; // Changez cette valeur
+final int _totalAnnualDays = 22; // Change this value
 ```
 
-#### Modifier les couleurs
-Éditez `lib/main.dart` :
+#### Modify Colors
+Edit `lib/main.dart`:
 ```dart
-seedColor: const Color(0xFF1B5E20), // Vert marocain
+seedColor: const Color(0xFF00BFFF), // Deep sky blue
 ```
 
-## 📦 Dépendances Principales
+## 📦 Main Dependencies
 
-- **flutter** : Framework de développement
-- **provider** : Gestion d'état
-- **http** : Appels API
-- **intl** : Formatage des dates
-- **shared_preferences** : Stockage local
+- **flutter**: Development framework
+- **provider**: State management
+- **http**: API calls
+- **intl**: Date formatting
+- **shared_preferences**: Local storage
+- **table_calendar**: Calendar widget
+- **url_launcher**: Email links
 
-## 🐛 Résolution de Problèmes
+## 🐛 Troubleshooting
 
-### Erreur : "Gradle build failed"
+### Error: "Gradle build failed"
 ```bash
 cd android
 ./gradlew clean
@@ -144,7 +145,7 @@ flutter pub get
 flutter run
 ```
 
-### Erreur : "CocoaPods not installed" (iOS)
+### Error: "CocoaPods not installed" (iOS)
 ```bash
 sudo gem install cocoapods
 cd ios
@@ -153,108 +154,107 @@ cd ..
 flutter run
 ```
 
-### Erreur : "Android licenses not accepted"
+### Error: "Android licenses not accepted"
 ```bash
 flutter doctor --android-licenses
 ```
 
-### L'application ne se lance pas
-1. Vérifiez qu'un appareil est connecté : `flutter devices`
-2. Nettoyez le cache : `flutter clean`
-3. Réinstallez les dépendances : `flutter pub get`
-4. Relancez : `flutter run`
+### App won't launch
+1. Check that a device is connected: `flutter devices`
+2. Clean cache: `flutter clean`
+3. Reinstall dependencies: `flutter pub get`
+4. Relaunch: `flutter run`
 
-## 📊 Performances
+## 📊 Performance
 
-### Mode Debug vs Release
+### Debug vs Release Mode
 
-- **Debug** : Pour le développement, plus lent
+- **Debug**: For development, slower
   ```bash
   flutter run
   ```
 
-- **Release** : Pour la production, optimisé
+- **Release**: For production, optimized
   ```bash
   flutter run --release
   ```
 
-### Taille de l'APK
+### APK Size
 
-L'APK en mode release fait environ 15-20 MB.
+The release APK is approximately 15-20 MB.
 
-Pour réduire la taille :
+To reduce size:
 ```bash
 flutter build apk --split-per-abi --release
 ```
 
-## 🔐 Sécurité
+## 🔐 Security
 
-### Données Locales
-- Les données sont stockées localement avec `shared_preferences`
-- Aucune donnée n'est envoyée à des serveurs externes
-- Les données sont perdues lors de la désinstallation
+### Local Data
+- Data is stored locally with `shared_preferences`
+- No data is sent to external servers
+- Data is lost when uninstalling
 
-### Permissions Requises
-- **Internet** : Pour récupérer les jours fériés (optionnel)
-- Aucune autre permission nécessaire
+### Required Permissions
+- **Internet**: To fetch holidays (optional)
+- No other permissions required
 
-## 📱 Compatibilité
+## 📱 Compatibility
 
 ### Android
-- Version minimale : Android 5.0 (API 21)
-- Version cible : Android 14 (API 34)
+- Minimum version: Android 5.0 (API 21)
+- Target version: Android 14 (API 34)
 
 ### iOS
-- Version minimale : iOS 12.0
-- Testé jusqu'à iOS 17
+- Minimum version: iOS 12.0
+- Tested up to iOS 17
 
 ### Web
 - Chrome, Firefox, Safari, Edge
 - Responsive design
 
-## 🔄 Mises à Jour
+## 🔄 Updates
 
-Pour mettre à jour les dépendances :
+To update dependencies:
 ```bash
 flutter pub upgrade
 ```
 
-Pour mettre à jour Flutter :
+To update Flutter:
 ```bash
 flutter upgrade
 ```
 
-## 📞 Support Technique
+## 📞 Technical Support
 
-### Logs de Débogage
+### Debug Logs
 ```bash
 flutter run --verbose
 ```
 
-### Informations Système
+### System Information
 ```bash
 flutter doctor -v
 ```
 
-### Nettoyer le Projet
+### Clean Project
 ```bash
 flutter clean
 flutter pub get
 ```
 
-## 🎯 Prochaines Étapes
+## 🎯 Next Steps
 
-1. ✅ Installation complète
-2. ✅ Tests passés avec succès
-3. ✅ Analyse du code sans erreurs
-4. 📱 Prêt à être lancé !
+1. ✅ Complete installation
+2. ✅ Tests passed successfully
+3. ✅ Code analysis without errors
+4. 📱 Ready to launch!
 
-Pour démarrer l'application :
+To start the application:
 ```bash
 flutter run
 ```
 
 ---
 
-**Bon développement ! 🚀**
-
+**Happy coding! 🚀**

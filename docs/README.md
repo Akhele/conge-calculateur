@@ -10,8 +10,8 @@ Documentation for setting up and running the app locally.
 - **[INSTALLATION.md](installation/INSTALLATION.md)** - Complete installation guide
 - **[QUICK_SETUP.md](installation/QUICK_SETUP.md)** - Quick start guide
 - **[API_SETUP.md](installation/API_SETUP.md)** - API configuration for holidays
-- **[GUIDE_UTILISATION.md](installation/GUIDE_UTILISATION.md)** - User guide (French)
-- **[REFERENCE_RAPIDE.md](installation/REFERENCE_RAPIDE.md)** - Quick reference (French/Arabic)
+- **[USER_GUIDE.md](installation/USER_GUIDE.md)** - Complete user guide
+- **[QUICK_REFERENCE.md](installation/QUICK_REFERENCE.md)** - Quick reference (English/Arabic)
 
 ### 🚀 Release & Build (`release/`)
 Documentation for building and releasing the app.
@@ -46,7 +46,7 @@ Scripts and development tools.
 ### For New Developers
 1. Start with [Installation Guide](installation/INSTALLATION.md)
 2. Read [Quick Setup](installation/QUICK_SETUP.md)
-3. Check [User Guide](installation/GUIDE_UTILISATION.md)
+3. Check [User Guide](installation/USER_GUIDE.md)
 
 ### For Release Preparation
 1. Follow [Release Guide](release/RELEASE_GUIDE.md)
