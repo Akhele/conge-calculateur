@@ -44,6 +44,7 @@ class _WorkScheduleScreenState extends State<WorkScheduleScreen> {
     final now = DateTime.now();
     _todayDate = DateTime(now.year, now.month, now.day);
     _selectedDate = DateTime(now.year, now.month, now.day);
+    _focusedDay = DateTime(now.year, now.month, now.day);
     _loadStartTime();
   }
 
@@ -673,7 +674,9 @@ class _WorkScheduleScreenState extends State<WorkScheduleScreen> {
         });
       },
       onPageChanged: (focusedDay) {
-        _focusedDay = focusedDay;
+        setState(() {
+          _focusedDay = focusedDay;
+        });
       },
       calendarBuilders: CalendarBuilders(
         defaultBuilder: (context, date, events) {
