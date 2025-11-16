@@ -197,6 +197,30 @@ If the above don't work, you can configure manual code signing:
 **Why this happens:**
 Codemagic automatically calls `app-store-connect fetch-signing-files` with `--type IOS_APP_DEVELOPMENT` before your scripts run. This is Codemagic's automatic code signing setup, which defaults to development profiles. The `codemagic.yaml` scripts run after this automatic step, so we can't prevent it from trying to create development profiles.
 
+### Error: "Invalid Provisioning Profile. Missing code-signing certificate. A distribution provisioning profile should be used"
+
+**Cause:**
+- The IPA was built with a Development provisioning profile instead of an App Store Distribution profile
+- Development profiles cannot be used for App Store uploads
+- This happens when Codemagic uses development profiles during the build
+
+**Solution:**
+1. ✅ Ensure `codemagic.yaml` includes `xcode-project use-profiles --type IOS_APP_STORE`
+2. ✅ Verify `ios/ExportOptions.plist` has `method` set to `app-store`
+3. ✅ Check that the build uses `flutter build ipa` (not `flutter build ios`)
+4. ✅ Rebuild the app in Codemagic - the updated configuration should use App Store Distribution profiles
+5. ✅ If the issue persists, check Codemagic build logs to see which profile type was used
+
+**Verification:**
+After building, you can verify the IPA was signed correctly:
+```bash
+# Check the provisioning profile in the IPA
+unzip -q YourApp.ipa -d /tmp/ipa_check
+security cms -D -i /tmp/ipa_check/Payload/Runner.app/embedded.mobileprovision
+# Look for "ProvisionedDevices" - if present, it's a Development profile (wrong)
+# For App Store distribution, there should be NO "ProvisionedDevices" key
+```
+
 ### Error: "No signing certificate found"
 
 **Solution:**
