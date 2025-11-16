@@ -33,6 +33,13 @@ Documentation for publishing to Google Play Store.
 - **[privacy_policy.html](play-store/privacy_policy.html)** - Privacy policy HTML file
 - **[PRIVACY_POLICY_TEMPLATE.md](play-store/PRIVACY_POLICY_TEMPLATE.md)** - Privacy policy template
 
+### 🍎 App Store (`app-store/`)
+Documentation for publishing to Apple App Store.
+
+- **[APP_STORE_SUBMISSION.md](app-store/APP_STORE_SUBMISSION.md)** - Complete App Store submission guide
+- **[QUICK_START.md](app-store/QUICK_START.md)** - Quick start guide for App Store
+- **[README.md](app-store/README.md)** - App Store overview
+
 ### 🛠️ Development (`development/`)
 Scripts and development tools.
 
@@ -57,6 +64,11 @@ Scripts and development tools.
 1. Read [Play Store Publish Guide](play-store/PLAY_STORE_PUBLISH.md)
 2. Prepare content: [Store Content](play-store/PLAY_STORE_CONTENT.md)
 3. Use quick guide: [Quick Publish Steps](play-store/QUICK_PUBLISH_STEPS.md)
+
+### For App Store Publishing
+1. Read [App Store Submission Guide](app-store/APP_STORE_SUBMISSION.md)
+2. Use quick start: [Quick Start Guide](app-store/QUICK_START.md)
+3. Follow step-by-step instructions in the complete guide
 
 ## 📝 Main README
 
