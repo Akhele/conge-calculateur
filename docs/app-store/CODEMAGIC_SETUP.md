@@ -163,6 +163,23 @@ The build will automatically upload to App Store Connect if configured. To enabl
 4. ✅ Check that the API key has correct permissions (App Manager or Admin)
 5. ✅ Verify Key ID and Issuer ID are correct
 
+### Error: "Cannot create profile: the request does not include any iOS testing devices"
+
+**Cause:**
+- Codemagic is trying to create an iOS Development profile, which requires registered devices
+- For App Store distribution, you need App Store Distribution profiles (not Development profiles)
+
+**Solution:**
+- ✅ The `codemagic.yaml` has been configured to skip the `xcode-project use-profiles` step
+- ✅ When using `flutter build ipa`, Codemagic automatically uses App Store Distribution profiles
+- ✅ No devices are needed for App Store Distribution profiles
+- ✅ The build will automatically create/fetch the correct App Store Distribution profile
+
+**Note:** If you still see this error, ensure:
+1. You're building with `flutter build ipa` (not `flutter build ios`)
+2. The `codemagic.yaml` doesn't include `xcode-project use-profiles` without the `--type` flag
+3. Your App Store Connect API key has permissions to create distribution profiles
+
 ### Error: "No signing certificate found"
 
 **Solution:**
