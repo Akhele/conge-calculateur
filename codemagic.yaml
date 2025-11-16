@@ -21,6 +21,20 @@ workflows:
       - name: Install CocoaPods dependencies
         script: |
           cd ios && pod install
+      - name: Set up code signing for App Store distribution
+        script: |
+          # IMPORTANT: Codemagic automatically tries to fetch development profiles before this script runs
+          # To fix this, you need to configure code signing in Codemagic UI:
+          # 1. Go to your app settings in Codemagic
+          # 2. Go to "Code signing" section
+          # 3. Select "Automatic" code signing
+          # 4. Ensure "Distribution type" is set to "App Store" (not "Development")
+          #
+          # Alternatively, register at least one device in Apple Developer Portal if you need development profiles
+          #
+          # For now, try to use App Store profiles explicitly
+          xcode-project use-profiles --type IOS_APP_STORE 2>/dev/null || \
+          echo "Warning: Could not fetch App Store profiles. Codemagic will try to create them during build."
       - name: Build ipa for distribution
         script: |
           # Build for App Store distribution using export options

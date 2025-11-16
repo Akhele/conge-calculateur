@@ -166,19 +166,36 @@ The build will automatically upload to App Store Connect if configured. To enabl
 ### Error: "Cannot create profile: the request does not include any iOS testing devices"
 
 **Cause:**
-- Codemagic is trying to create an iOS Development profile, which requires registered devices
-- For App Store distribution, you need App Store Distribution profiles (not Development profiles)
+- Codemagic is automatically trying to create an iOS Development profile before your scripts run
+- Development profiles require at least one registered device in Apple Developer Portal
+- This happens because Codemagic's automatic code signing setup defaults to development profiles
 
-**Solution:**
-- ✅ The `codemagic.yaml` has been configured to skip the `xcode-project use-profiles` step
-- ✅ When using `flutter build ipa`, Codemagic automatically uses App Store Distribution profiles
-- ✅ No devices are needed for App Store Distribution profiles
-- ✅ The build will automatically create/fetch the correct App Store Distribution profile
+**Solutions (choose one):**
 
-**Note:** If you still see this error, ensure:
-1. You're building with `flutter build ipa` (not `flutter build ios`)
-2. The `codemagic.yaml` doesn't include `xcode-project use-profiles` without the `--type` flag
-3. Your App Store Connect API key has permissions to create distribution profiles
+#### Solution 1: Register a Device (Quickest Fix)
+1. Go to [Apple Developer Portal](https://developer.apple.com/account)
+2. Navigate to **Certificates, Identifiers & Profiles** → **Devices**
+3. Click **"+"** to add a new device
+4. Enter your device UDID (you can find it in Xcode or Settings → General → About)
+5. Register the device
+6. Retry the Codemagic build
+
+**Note:** Even though you're building for App Store distribution, registering one device will allow Codemagic to create the development profile it's trying to create, and the build will proceed.
+
+#### Solution 2: Configure Codemagic UI (Recommended)
+1. Go to your app in Codemagic dashboard
+2. Click on **"Code signing"** in the app settings
+3. If there's an option for **"Distribution type"**, set it to **"App Store"** (not "Development")
+4. Save and retry the build
+
+#### Solution 3: Use Manual Code Signing
+If the above don't work, you can configure manual code signing:
+1. Create App Store Distribution certificate and profile manually in Apple Developer Portal
+2. Upload them to Codemagic
+3. Configure the workflow to use manual signing
+
+**Why this happens:**
+Codemagic automatically calls `app-store-connect fetch-signing-files` with `--type IOS_APP_DEVELOPMENT` before your scripts run. This is Codemagic's automatic code signing setup, which defaults to development profiles. The `codemagic.yaml` scripts run after this automatic step, so we can't prevent it from trying to create development profiles.
 
 ### Error: "No signing certificate found"
 
