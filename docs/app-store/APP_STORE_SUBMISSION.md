@@ -2,6 +2,11 @@
 
 Complete guide for submitting your app to the Apple App Store.
 
+## Build Methods
+
+This guide covers manual submission using Xcode. For automated CI/CD builds, see:
+- **[Codemagic Setup Guide](CODEMAGIC_SETUP.md)** - Automated builds and App Store uploads using Codemagic
+
 ## Prerequisites
 
 - [ ] **Apple Developer Account** ($99/year)
@@ -200,6 +205,11 @@ If Xcode upload fails, use Transporter:
 
 - **Name**: "Congé calculateur" (30 characters max)
 - **Subtitle**: "Calculateur de congés annuels" (30 characters max)
+- **Promotional Text** (170 characters max, optional):
+  ```
+  Calculez vos congés en un clic ! Gestion automatique des week-ends et jours fériés marocains. Gratuit, sans pub, sans collecte de données.
+  ```
+  *Note: Promotional Text can be updated anytime without submitting a new version. Use it to highlight special features or promotions.*
 - **Description** (4000 characters max):
   ```
   Application développée pour aider les agents des douanes marocaines à calculer leurs congés annuels et leur planning de travail.

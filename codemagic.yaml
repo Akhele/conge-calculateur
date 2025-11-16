@@ -1,0 +1,90 @@
+workflows:
+  ios-workflow:
+    name: iOS Workflow
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      groups:
+        - app_store_credentials
+      vars:
+        APP_ID: com.akhele.congecalculateur
+        XCODE_WORKSPACE: "ios/Runner.xcworkspace"
+        XCODE_SCHEME: "Runner"
+        BUNDLE_ID: "com.akhele.congecalculateur"
+    scripts:
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios && pod install
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
+      - name: Build ipa for distribution
+        script: |
+          flutter build ipa --release \
+            --build-name=$(FLUTTER_BUILD_NAME) \
+            --build-number=$(FLUTTER_BUILD_NUMBER)
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - contact@akhele.com  # Replace with your email
+        notify:
+          success: true
+          failure: false
+      app_store_connect:
+        auth: api_key
+        # App Store Connect API key credentials are stored in Codemagic UI
+        # Go to: Settings > Integrations > App Store Connect > Add API Key
+        # Then add the key to the app_store_credentials group
+        
+        submit_to_testflight: false  # Set to true if you want to submit to TestFlight
+        # submit_to_app_store: true  # Uncomment to submit directly to App Store
+        
+        # Optional: Add release notes
+        # release_notes: "Version $(FLUTTER_BUILD_NAME) - Initial release"
+
+  android-workflow:
+    name: Android Workflow
+    max_build_duration: 120
+    instance_type: linux_x2
+    environment:
+      flutter: stable
+      groups:
+        - keystore_credentials
+      vars:
+        PACKAGE_NAME: "com.akhele.congecalculateur"
+    scripts:
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Set up local properties
+        script: |
+          flutter precache --android
+      - name: Build Android App Bundle
+        script: |
+          flutter build appbundle --release \
+            --build-name=$(FLUTTER_BUILD_NAME) \
+            --build-number=$(FLUTTER_BUILD_NUMBER)
+    artifacts:
+      - build/app/outputs/bundle/**/*.aab
+    publishing:
+      email:
+        recipients:
+          - contact@akhele.com  # Replace with your email
+        notify:
+          success: true
+          failure: false
+      # google_play:
+      #   credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+      #   track: internal  # or alpha, beta, production
+      #   submit_as_draft: true
+
