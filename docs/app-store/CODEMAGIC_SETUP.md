@@ -202,24 +202,75 @@ Codemagic automatically calls `app-store-connect fetch-signing-files` with `--ty
 **Cause:**
 - The IPA was built with a Development provisioning profile instead of an App Store Distribution profile
 - Development profiles cannot be used for App Store uploads
-- This happens when Codemagic uses development profiles during the build
+- This happens when Codemagic's automatic code signing uses development profiles before your scripts run
 
-**Solution:**
+**Root Cause:**
+Codemagic automatically calls `app-store-connect fetch-signing-files` with `--type IOS_APP_DEVELOPMENT` before your YAML scripts run. This automatic step uses Development profiles, which cannot be used for App Store uploads.
+
+**Solutions (try in order):**
+
+#### Solution 1: Configure Codemagic UI Code Signing (RECOMMENDED)
+
+This is the most reliable solution:
+
+1. **Go to Codemagic Dashboard:**
+   - Navigate to your app
+   - Click on **"Code signing"** tab (or find it in app settings)
+
+2. **Configure Code Signing:**
+   - Look for **"Distribution type"** or **"Profile type"** setting
+   - Change it from **"Development"** to **"App Store"** or **"Distribution"**
+   - If there's a **"Automatic code signing"** option, ensure it's enabled
+   - Save the settings
+
+3. **Alternative: Disable Automatic Code Signing:**
+   - If available, disable automatic code signing in UI
+   - Let the `codemagic.yaml` scripts handle it with `--type IOS_APP_STORE`
+
+4. **Rebuild:**
+   - Trigger a new build
+   - The build should now use App Store Distribution profiles
+
+#### Solution 2: Verify YAML Configuration
+
 1. ✅ Ensure `codemagic.yaml` includes `xcode-project use-profiles --type IOS_APP_STORE`
 2. ✅ Verify `ios/ExportOptions.plist` has `method` set to `app-store`
 3. ✅ Check that the build uses `flutter build ipa` (not `flutter build ios`)
-4. ✅ Rebuild the app in Codemagic - the updated configuration should use App Store Distribution profiles
-5. ✅ If the issue persists, check Codemagic build logs to see which profile type was used
+4. ✅ Check Codemagic build logs - look for which profile type was used
+
+#### Solution 3: Manual Profile Creation
+
+If the above don't work:
+
+1. **Create App Store Distribution Profile Manually:**
+   - Go to [Apple Developer Portal](https://developer.apple.com/account)
+   - Navigate to **Certificates, Identifiers & Profiles** → **Profiles**
+   - Create a new profile with type **"App Store"**
+   - Download the profile
+
+2. **Upload to Codemagic:**
+   - Go to Codemagic → Your app → Code signing
+   - Upload the App Store Distribution profile manually
+   - Configure the workflow to use manual signing
 
 **Verification:**
-After building, you can verify the IPA was signed correctly:
+After building, verify the IPA was signed correctly:
 ```bash
 # Check the provisioning profile in the IPA
 unzip -q YourApp.ipa -d /tmp/ipa_check
-security cms -D -i /tmp/ipa_check/Payload/Runner.app/embedded.mobileprovision
-# Look for "ProvisionedDevices" - if present, it's a Development profile (wrong)
+security cms -D -i /tmp/ipa_check/Payload/Runner.app/embedded.mobileprovision | grep -A 5 "ProvisionedDevices"
+
+# If "ProvisionedDevices" appears, it's a Development profile (WRONG)
 # For App Store distribution, there should be NO "ProvisionedDevices" key
+# The profile type should be "App Store" or "Distribution"
 ```
+
+**Check Build Logs:**
+In Codemagic build logs, look for:
+- `fetch-signing-files --type IOS_APP_DEVELOPMENT` ← This is the problem
+- `fetch-signing-files --type IOS_APP_STORE` ← This is what we want
+
+If you see `IOS_APP_DEVELOPMENT`, Codemagic UI settings are overriding your YAML configuration.
 
 ### Error: "No signing certificate found"
 

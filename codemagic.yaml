@@ -23,20 +23,38 @@ workflows:
           cd ios && pod install
       - name: Configure Xcode project for App Store distribution
         script: |
-          # Configure Xcode project to use automatic code signing
-          # This must be done before fetching profiles to ensure App Store distribution profiles are used
+          # CRITICAL: Configure Xcode project to use App Store Distribution signing
+          # This ensures we use "iPhone Distribution" instead of "iPhone Developer"
+          # The issue is that Codemagic's automatic code signing uses Development profiles
+          # We need to explicitly override this for App Store distribution
+          
+          # First, configure automatic signing
           xcode-project configure-signing \
             --bundle-id "$BUNDLE_ID" \
             --automatic
-      - name: Set up code signing for App Store distribution
-        script: |
-          # Fetch/create App Store Distribution profiles (not Development profiles)
-          # This is critical - Development profiles cannot be used for App Store uploads
+          
+          # Then, explicitly fetch App Store Distribution profiles
+          # This should override any Development profiles Codemagic might have fetched
           xcode-project use-profiles --type IOS_APP_STORE
+          
+          # Verify the configuration
+          echo "Code signing configured for App Store distribution"
+      - name: Verify code signing before build
+        script: |
+          # Verify that App Store Distribution profiles are available
+          # This helps catch issues before the build
+          echo "Verifying code signing configuration..."
+          xcode-project use-profiles --type IOS_APP_STORE --verbose || {
+            echo "ERROR: Could not fetch App Store Distribution profiles"
+            echo "This build will likely fail validation in App Store Connect"
+            exit 1
+          }
       - name: Build ipa for distribution
         script: |
           # Build for App Store distribution
           # The ExportOptions.plist ensures we use App Store distribution method
+          # IMPORTANT: If you still get "Invalid Provisioning Profile" errors,
+          # you need to configure code signing in Codemagic UI (see documentation)
           flutter build ipa --release \
             --build-name=$(FLUTTER_BUILD_NAME) \
             --build-number=$(FLUTTER_BUILD_NUMBER) \
