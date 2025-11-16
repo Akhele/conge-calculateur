@@ -53,19 +53,25 @@ flutter pub get
 flutter run
 ```
 
+## 📚 Documentation
+
+All documentation has been organized in the `docs/` folder:
+
+- **[Installation & Setup](docs/installation/)** - Setup guides, API configuration, user guides
+- **[Release & Build](docs/release/)** - Building and releasing the app, signing setup
+- **[Play Store](docs/play-store/)** - Publishing to Google Play Store, privacy policy
+- **[Development](docs/development/)** - Build scripts and development tools
+
+**Quick Links:**
+- [Installation Guide](docs/installation/INSTALLATION.md)
+- [Release Guide](docs/release/RELEASE_GUIDE.md)
+- [Play Store Publishing](docs/play-store/PLAY_STORE_PUBLISH.md)
+
 ## 🔧 Configuration
 
 ### API Integration (Optional)
 
-The app includes fallback data for Moroccan holidays (2024-2025), but you can optionally integrate with the Calendarific API for more comprehensive data:
-
-1. Get a free API key from [Calendarific](https://calendarific.com/)
-2. Open `lib/services/holiday_service.dart`
-3. Replace `YOUR_API_KEY_HERE` with your actual API key:
-
-```dart
-static const String apiKey = 'your_actual_api_key';
-```
+The app includes fallback data for Moroccan holidays (2024-2025), but you can optionally integrate with the Calendarific API for more comprehensive data. See [API Setup Guide](docs/installation/API_SETUP.md) for details.
 
 If you don't configure an API key, the app will use the built-in holiday data.
 
