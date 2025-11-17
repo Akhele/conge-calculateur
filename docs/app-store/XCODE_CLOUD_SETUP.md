@@ -10,18 +10,18 @@ Xcode Cloud builds fail with errors like:
 
 ## Solution
 
-A pre-build script (`ci_scripts/ci_pre_xcodebuild.sh`) has been added to automatically:
+A post-clone script (`ci_post_clone.sh`) has been added to automatically:
 1. Generate Flutter configuration files (`Generated.xcconfig`)
 2. Install CocoaPods dependencies
 3. Verify all required files are present
 
 ## How It Works
 
-Xcode Cloud automatically runs scripts in the `ci_scripts/` directory:
-- Scripts starting with `ci_pre_` run **before** the build
-- Scripts starting with `ci_post_` run **after** the build
+Xcode Cloud automatically runs scripts with specific names:
+- `ci_post_clone.sh` - Runs **after** repository is cloned, **before** the build
+- Scripts in `ci_scripts/` directory - Run at specific build phases
 
-The script `ci_pre_xcodebuild.sh` runs before Xcode builds and ensures all Flutter dependencies are ready.
+The script `ci_post_clone.sh` runs after cloning and before Xcode builds, ensuring all Flutter dependencies are ready.
 
 ## Prerequisites
 
@@ -43,12 +43,14 @@ CocoaPods should be available in Xcode Cloud environment. The script will attemp
 ## Configuration Steps
 
 ### Step 1: Verify Script is Committed
-Ensure `ci_scripts/ci_pre_xcodebuild.sh` is committed to your repository:
+Ensure `ci_post_clone.sh` is committed to your repository root:
 ```bash
-git add ci_scripts/ci_pre_xcodebuild.sh
-git commit -m "Add Xcode Cloud pre-build script"
+git add ci_post_clone.sh
+git commit -m "Add Xcode Cloud post-clone script"
 git push
 ```
+
+**Important:** The script must be named `ci_post_clone.sh` and placed in the **root** of your repository, not in a subdirectory.
 
 ### Step 2: Configure Xcode Cloud Workflow
 

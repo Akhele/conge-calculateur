@@ -1,14 +1,13 @@
 #!/bin/sh
 
-# Xcode Cloud Pre-Build Script for Flutter iOS
-# This script runs before Xcode builds the project
+# Xcode Cloud Post-Clone Script for Flutter iOS
+# This script runs after the repository is cloned and before the build
 # It ensures Flutter dependencies and CocoaPods are installed
 
-# Don't exit on error immediately - we want to see all errors
 set -e
 
 echo "=========================================="
-echo "🚀 Xcode Cloud Pre-Build Script Starting"
+echo "🚀 Xcode Cloud Post-Clone Script Starting"
 echo "=========================================="
 echo "Timestamp: $(date)"
 echo "Working Directory: $(pwd)"
@@ -19,9 +18,14 @@ echo "=========================================="
 REPO_ROOT="${CI_WORKSPACE:-$(pwd)}"
 cd "${REPO_ROOT}"
 
-echo "📁 Working directory: ${REPO_ROOT}"
+echo "📁 Repository root: ${REPO_ROOT}"
 
 # Check if Flutter is available
+echo ""
+echo "=========================================="
+echo "🔍 Checking for Flutter"
+echo "=========================================="
+
 if ! command -v flutter &> /dev/null; then
     echo "⚠️ Flutter not found in PATH, searching..."
     
@@ -31,6 +35,7 @@ if ! command -v flutter &> /dev/null; then
         "${HOME}/development/flutter/bin"
         "/usr/local/flutter/bin"
         "/opt/flutter/bin"
+        "/Applications/flutter/bin"
     )
     
     FLUTTER_FOUND=false
@@ -44,48 +49,58 @@ if ! command -v flutter &> /dev/null; then
     done
     
     if [ "${FLUTTER_FOUND}" = "false" ]; then
-        echo "❌ Flutter not found in standard locations"
-        echo "Please ensure Flutter is installed in Xcode Cloud environment"
-        exit 1
+        echo "❌ ERROR: Flutter not found in standard locations"
+        echo ""
+        echo "Xcode Cloud may not have Flutter pre-installed."
+        echo "You may need to:"
+        echo "1. Install Flutter in Xcode Cloud environment, or"
+        echo "2. Use a different CI/CD service like Codemagic that supports Flutter"
+        echo ""
+        echo "Attempting to continue anyway - build may fail..."
+        # Don't exit - let's see if we can still build without Flutter
+        # (though it will likely fail)
     fi
 fi
 
 # Verify Flutter is accessible
-if ! command -v flutter &> /dev/null; then
-    echo "❌ Flutter command still not accessible"
-    exit 1
-fi
-
-echo "✅ Flutter found: $(flutter --version | head -n 1)"
-
-# Navigate to project root
-cd "${REPO_ROOT}"
-
-# Get Flutter dependencies
-echo "📦 Running 'flutter pub get'..."
-flutter pub get
-
-# Verify Generated.xcconfig was created
-if [ ! -f "ios/Flutter/Generated.xcconfig" ]; then
-    echo "❌ Generated.xcconfig not found after 'flutter pub get'"
-    echo "Attempting to regenerate..."
-    flutter precache --ios
+if command -v flutter &> /dev/null; then
+    echo "✅ Flutter found: $(flutter --version | head -n 1)"
+    
+    # Navigate to project root
+    cd "${REPO_ROOT}"
+    
+    # Get Flutter dependencies
+    echo ""
+    echo "=========================================="
+    echo "📦 Installing Flutter dependencies"
+    echo "=========================================="
     flutter pub get
+    
+    # Verify Generated.xcconfig was created
+    if [ ! -f "ios/Flutter/Generated.xcconfig" ]; then
+        echo "⚠️ Generated.xcconfig not found, attempting to regenerate..."
+        flutter precache --ios
+        flutter pub get
+    fi
+    
+    if [ ! -f "ios/Flutter/Generated.xcconfig" ]; then
+        echo "❌ ERROR: Failed to generate Generated.xcconfig"
+        echo "Build will likely fail"
+        exit 1
+    fi
+    
+    echo "✅ Generated.xcconfig created"
+else
+    echo "⚠️ Flutter not available - skipping Flutter setup"
+    echo "Build will likely fail if Generated.xcconfig is required"
 fi
-
-if [ ! -f "ios/Flutter/Generated.xcconfig" ]; then
-    echo "❌ Failed to generate Generated.xcconfig"
-    exit 1
-fi
-
-echo "✅ Generated.xcconfig created"
 
 # Install CocoaPods dependencies
 echo ""
 echo "=========================================="
 echo "🍫 Installing CocoaPods dependencies"
 echo "=========================================="
-cd ios
+cd "${REPO_ROOT}/ios"
 
 # Check if CocoaPods is installed
 if ! command -v pod &> /dev/null; then
@@ -96,13 +111,13 @@ if ! command -v pod &> /dev/null; then
         gem install cocoapods || {
             echo "⚠️ Failed to install CocoaPods with gem, trying with sudo..."
             sudo gem install cocoapods || {
-                echo "❌ Failed to install CocoaPods"
-                echo "This may cause the build to fail"
+                echo "❌ ERROR: Failed to install CocoaPods"
+                echo "CocoaPods should be pre-installed in Xcode Cloud"
                 exit 1
             }
         }
     else
-        echo "❌ gem command not found. Cannot install CocoaPods."
+        echo "❌ ERROR: gem command not found. Cannot install CocoaPods."
         echo "CocoaPods should be pre-installed in Xcode Cloud"
         exit 1
     fi
@@ -110,11 +125,11 @@ fi
 
 echo "✅ CocoaPods found: $(pod --version)"
 
-# Show current directory and list contents
+# Show current directory
 echo ""
 echo "Current directory: $(pwd)"
 echo "Directory contents:"
-ls -la | head -20
+ls -la | head -10
 
 # Clean and install pods
 echo ""
@@ -187,7 +202,7 @@ head -5 "${OUTPUT_FILE}" || true
 
 echo ""
 echo "=========================================="
-echo "✅ Pre-build setup completed successfully"
+echo "✅ Post-clone setup completed successfully"
 echo "=========================================="
 echo "All required files verified and ready for build"
 echo "=========================================="
