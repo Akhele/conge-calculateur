@@ -13,9 +13,7 @@
 migrate_working_dir/
 
 # API Keys (sensitive data)
-# Note: api_keys.dart is committed with placeholder 'YOUR_API_KEY_HERE'
-# The app uses fallback data when no API key is provided
-# lib/config/api_keys.dart
+lib/config/api_keys.dart
 
 # Android signing keys (sensitive data)
 android/key.properties
