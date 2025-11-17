@@ -1,5 +1,5 @@
 name: conge_calculateur
-description: A vacation calculator app for Moroccan customs officers
+description: A specialized vacation planning tool for Moroccan customs officers that automatically calculates vacation days, excludes weekends and public holidays, tracks annual leave balance, and provides work schedule planning features. Available in Arabic, French, and English.
 publish_to: 'none'
 version: 1.0.0+2
 
