@@ -18,13 +18,22 @@ Your Codemagic build worked! Now you need to complete the App Store Connect info
 
 **Answer: YES** (Flutter apps use standard encryption for HTTPS)
 
-**Then provide:**
-- **Explanation:** `This app uses standard encryption (HTTPS/TLS) for secure communication when fetching public holiday data from external APIs. No custom encryption is used.`
+5. **Next question:** "What type of encryption algorithms does your app implement?"
+
+**Answer: "None of the algorithms mentioned above"**
+
+**Why:** Your app only uses HTTPS/TLS encryption which is provided by Apple's operating system (iOS). You don't implement:
+- Proprietary encryption algorithms
+- Custom standard encryption algorithms
+- The app uses the built-in HTTPS/TLS from iOS/Apple's system
+
+6. **Then provide explanation:**
+- **Explanation:** `This app uses standard HTTPS/TLS encryption provided by Apple's iOS operating system for secure API communication. No custom encryption algorithms are implemented.`
 
 **Or use this shorter version:**
-- **Explanation:** `Standard HTTPS encryption for API calls`
+- **Explanation:** `Uses only HTTPS/TLS encryption provided by Apple's iOS system. No custom encryption.`
 
-5. Click **"Save"**
+7. Click **"Save"**
 
 ---
 
