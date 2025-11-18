@@ -1,3 +1,17 @@
+/// Screen displaying vacation history.
+/// 
+/// This screen shows a list of all confirmed vacations with:
+/// - Start and return dates
+/// - Number of working days used
+/// - Total calendar days
+/// - Weekend days included
+/// - Holiday days included
+/// - Status (upcoming, ongoing, completed)
+/// 
+/// Users can:
+/// - View detailed information about each vacation
+/// - Delete vacations from history
+/// - See holidays that occurred during each vacation period
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';

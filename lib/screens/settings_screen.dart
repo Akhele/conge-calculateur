@@ -1,3 +1,13 @@
+/// Screen for app settings and configuration.
+/// 
+/// This screen allows users to:
+/// - Change app language (Arabic, French, English)
+/// - Configure total annual vacation days
+/// - View current usage statistics
+/// 
+/// Changes to annual days are validated to ensure:
+/// - Minimum of 1 day
+/// - Not less than already used days
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/vacation_provider.dart';

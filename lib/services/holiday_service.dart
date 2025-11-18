@@ -1,3 +1,18 @@
+/// Service for fetching and managing Moroccan holidays.
+/// 
+/// This service provides methods to retrieve holidays from an external API
+/// (Calendarific) or use fallback data when the API is unavailable.
+/// 
+/// Features:
+/// - Fetches holidays from Calendarific API (when API key is configured)
+/// - Provides fallback data for fixed Moroccan holidays
+/// - Handles Islamic holidays (which vary by year based on lunar calendar)
+/// - Supports multiple languages (Arabic, French, English)
+/// 
+/// The service automatically falls back to built-in holiday data if:
+/// - No API key is configured
+/// - API request fails
+/// - Internet connection is unavailable
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -5,13 +20,30 @@ import '../models/holiday.dart';
 import '../config/api_keys.dart';
 
 class HolidayService {
-  // Using Calendarific API - get a free API key from https://calendarific.com/
-  // Configure your API key in lib/config/api_keys.dart
+  /// API key for Calendarific service.
+  /// Get a free API key from https://calendarific.com/
+  /// Configure your API key in lib/config/api_keys.dart
   static const String apiKey = ApiKeys.calendarificApiKey;
+  
+  /// Base URL for the Calendarific API
   static const String baseUrl = 'https://calendarific.com/api/v2';
 
-  // Fallback: Moroccan fixed holidays for 2024-2025
-  // Returns holidays with names in the requested language (or English as default)
+  /// Gets fallback Moroccan fixed holidays for a given year.
+  /// 
+  /// This method returns a list of fixed holidays (non-Islamic) that occur
+  /// on the same date every year. These include:
+  /// - New Year's Day (January 1)
+  /// - Independence Manifesto Day (January 11)
+  /// - Labour Day (May 1)
+  /// - Throne Day (July 30)
+  /// - And other fixed national holidays
+  /// 
+  /// **Parameters:**
+  /// - [year]: The year for which to get holidays
+  /// - [language]: Optional language code ('fr', 'ar', 'en') for holiday names
+  /// 
+  /// **Returns:**
+  /// A list of fixed holidays for the specified year
   static List<Holiday> getFallbackHolidays(int year, {String? language}) {
     // French translations for Moroccan holidays
     final Map<String, String> frenchNames = {
@@ -117,8 +149,22 @@ class HolidayService {
     return holidays;
   }
 
-  // Helper method to get Islamic holidays for any year
-  // Islamic holidays shift ~10-11 days earlier each year (lunar calendar)
+  /// Gets Islamic holidays for a given year.
+  /// 
+  /// Islamic holidays follow the lunar calendar and shift approximately
+  /// 10-11 days earlier each year. This method provides Islamic holidays
+  /// for years 2024-2028, with approximate calculations for future years.
+  /// 
+  /// **Parameters:**
+  /// - [year]: The year for which to get Islamic holidays
+  /// - [language]: Optional language code for holiday names
+  /// 
+  /// **Returns:**
+  /// A list of Islamic holidays including:
+  /// - Eid al-Fitr (2 days)
+  /// - Eid al-Adha (2 days)
+  /// - Islamic New Year
+  /// - Mawlid (Prophet's Birthday)
   static List<Holiday> getIslamicHolidaysForYear(int year, {String? language}) {
     List<Holiday> holidays;
     if (year == 2024) {
@@ -388,6 +434,24 @@ class HolidayService {
     ];
   }
 
+  /// Fetches holidays for a given year from API or fallback data.
+  /// 
+  /// This is the main method to get holidays. It:
+  /// 1. Tries to fetch from Calendarific API if API key is configured
+  /// 2. Falls back to built-in data if API fails or no key is available
+  /// 3. Merges API data with Islamic holidays from fallback
+  /// 4. Adds missing Moroccan holidays (Amazigh New Year, Unity Day) if needed
+  /// 
+  /// **Parameters:**
+  /// - [year]: The year for which to fetch holidays
+  /// - [language]: Optional language code for API requests and holiday names
+  /// 
+  /// **Returns:**
+  /// A sorted list of all holidays for the specified year
+  /// 
+  /// **Note:**
+  /// The method always ensures Islamic holidays are included, even if the API
+  /// doesn't return them, by merging with fallback Islamic holiday data.
   Future<List<Holiday>> getHolidays(int year, {String? language}) async {
     try {
       // Try to fetch from API if key is configured
@@ -592,6 +656,18 @@ class HolidayService {
     return holidays;
   }
 
+  /// Fetches holidays for a date range spanning multiple years.
+  /// 
+  /// This method automatically determines which years are needed based on the
+  /// date range and fetches holidays for all relevant years.
+  /// 
+  /// **Parameters:**
+  /// - [start]: Start date of the range
+  /// - [end]: End date of the range
+  /// - [language]: Optional language code for holiday names
+  /// 
+  /// **Returns:**
+  /// A filtered list of holidays that fall within the specified date range
   Future<List<Holiday>> getHolidaysForDateRange(DateTime start, DateTime end, {String? language}) async {
     final years = <int>{};
     for (var date = start; date.isBefore(end.add(const Duration(days: 1))); date = date.add(const Duration(days: 1))) {

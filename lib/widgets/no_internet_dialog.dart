@@ -1,3 +1,12 @@
+/// Dialog shown when no internet connection is detected.
+/// 
+/// This dialog informs users that:
+/// - No internet connection is available
+/// - The app will use cached holiday data
+/// - They should connect to internet for latest Islamic holiday dates
+/// 
+/// The dialog is non-dismissible (barrierDismissible: false) to ensure
+/// users acknowledge the offline status.
 import 'package:flutter/material.dart';
 
 class NoInternetDialog extends StatelessWidget {

@@ -1,3 +1,19 @@
+/// Main entry point for the Vacation Calculator application.
+/// 
+/// This app helps users calculate vacation return dates based on working days,
+/// excluding weekends and holidays. It supports multiple languages (Arabic, French, English)
+/// and tracks annual leave usage.
+/// 
+/// Key features:
+/// - Calculate vacation return dates considering weekends and holidays
+/// - Track annual leave balance
+/// - View vacation history
+/// - Display Moroccan holidays calendar
+/// - Work schedule calculator for shift workers
+/// 
+/// Author: Vacation Calculator Team
+/// Version: 1.0.0
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +24,13 @@ import 'services/vacation_provider.dart';
 import 'services/language_provider.dart';
 import 'l10n/app_localizations.dart';
 
+/// Application entry point.
+/// 
+/// Initializes the app by:
+/// 1. Ensuring Flutter bindings are initialized
+/// 2. Loading saved language preference from SharedPreferences
+/// 3. Checking if this is the first launch
+/// 4. Running the app with appropriate initial state
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
@@ -54,8 +77,18 @@ void main() async {
   ));
 }
 
+/// Root widget of the application.
+/// 
+/// Sets up the MaterialApp with:
+/// - Multi-language support (Arabic, French, English)
+/// - Theme configuration
+/// - Provider setup for state management
+/// - Navigation to language selection screen on first launch
 class MyApp extends StatelessWidget {
+  /// The initial language code loaded from preferences (e.g., 'fr', 'ar', 'en')
   final String? initialLanguage;
+  
+  /// Whether this is the first time the app is launched
   final bool isFirstLaunch;
   
   const MyApp({

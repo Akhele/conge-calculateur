@@ -1,13 +1,44 @@
+/// Service for calculating vacation return dates.
+/// 
+/// This class provides static methods to calculate when an employee should
+/// return to work after taking a certain number of working days off.
+/// 
+/// The calculation considers:
+/// - Only Monday-Friday are counted as working days
+/// - Weekends (Saturday/Sunday) are automatically included but don't count
+/// - Public holidays on weekdays are automatically included but don't count
+/// - Holidays falling on weekends are tracked but not counted
 import '../models/vacation_calculation.dart';
 import '../models/holiday.dart';
 
 class VacationCalculator {
-  /// Calculate the return date based on requested working days
+  /// Calculates the return date based on requested working days.
   /// 
-  /// Rules:
+  /// This is the core calculation method that determines when an employee
+  /// should return to work after requesting a specific number of working days off.
+  /// 
+  /// **Calculation Rules:**
   /// - Only working days (Mon-Fri, excluding holidays) count toward the requested days
-  /// - Weekends are automatically added and don't count
-  /// - Public holidays are automatically added and don't count
+  /// - Weekends are automatically added and don't count toward working days
+  /// - Public holidays on weekdays are automatically added and don't count
+  /// - Holidays falling on weekends are tracked but not counted
+  /// 
+  /// **Parameters:**
+  /// - [startDate]: The first day of vacation
+  /// - [requestedWorkingDays]: Number of working days requested (must be > 0)
+  /// - [holidays]: List of holidays to consider in the calculation
+  /// 
+  /// **Returns:**
+  /// A [VacationCalculation] object containing:
+  /// - Return date (first working day after vacation)
+  /// - Total calendar days
+  /// - Count of weekend days
+  /// - Count of holiday days
+  /// - Lists of holidays in the period
+  /// 
+  /// **Example:**
+  /// If you request 5 working days starting Monday, and there's a holiday
+  /// on Wednesday, you'll return the following Monday (5 working days later).
   static VacationCalculation calculateReturnDate({
     required DateTime startDate,
     required int requestedWorkingDays,
@@ -170,12 +201,31 @@ class VacationCalculator {
     );
   }
 
-  /// Check if a date is a weekend (Saturday or Sunday)
+  /// Checks if a given date falls on a weekend (Saturday or Sunday).
+  /// 
+  /// **Parameters:**
+  /// - [date]: The date to check
+  /// 
+  /// **Returns:**
+  /// `true` if the date is Saturday or Sunday, `false` otherwise
   static bool _isWeekend(DateTime date) {
     return date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
   }
 
-  /// Get the number of working days between two dates
+  /// Calculates the number of working days between two dates.
+  /// 
+  /// This method counts only weekdays (Monday-Friday) that are not holidays.
+  /// 
+  /// **Parameters:**
+  /// - [start]: The start date (inclusive)
+  /// - [end]: The end date (exclusive - not counted)
+  /// - [holidays]: List of holidays to exclude from the count
+  /// 
+  /// **Returns:**
+  /// The number of working days between the two dates
+  /// 
+  /// **Example:**
+  /// If start is Monday and end is Friday, returns 4 (Mon-Thu)
   static int getWorkingDaysBetween({
     required DateTime start,
     required DateTime end,

@@ -1,3 +1,17 @@
+/// Screen displaying vacation calculation results.
+/// 
+/// This screen shows the detailed results of a vacation calculation:
+/// - Return to work date (highlighted)
+/// - Start date
+/// - Number of requested working days
+/// - Total calendar days
+/// - Weekend days included
+/// - Holiday days included
+/// - List of holidays during the vacation period
+/// 
+/// Users can:
+/// - Confirm and save the vacation to history
+/// - Modify the calculation to go back and change inputs
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';

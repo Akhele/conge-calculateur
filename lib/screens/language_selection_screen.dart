@@ -1,3 +1,14 @@
+/// First-launch language selection screen.
+/// 
+/// This screen is shown only on the first app launch, allowing users to
+/// select their preferred language before entering the app.
+/// 
+/// Supported languages:
+/// - Arabic (العربية)
+/// - French (Français)
+/// - English
+/// 
+/// After selection, the language is saved and the user is taken to the home screen.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/language_provider.dart';

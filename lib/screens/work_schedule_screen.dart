@@ -1,24 +1,56 @@
+/// Screen for calculating work schedules for shift workers.
+/// 
+/// This screen helps employees working rotating shifts calculate their work schedule.
+/// It supports two timing systems:
+/// - 12/24: Work 12 hours, rest 24 hours (3-day cycle)
+/// - 12/24, 12/48: Day shift 12h rest 24h, Night shift 12h rest 48h (4-day cycle)
+/// 
+/// Features:
+/// - Select timing system
+/// - Set work start time
+/// - Select current work type (Day/Night/Rest)
+/// - View calendar with color-coded schedule
+/// - Check status for any future or past date
+/// 
+/// The calendar displays:
+/// - J (Jour/Day) - Orange
+/// - N (Nuit/Night) - Indigo
+/// - R (Repos/Rest) - Green
+/// - RC (Repos Compensateur) - Teal (only in 12/24, 12/48 system)
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+/// Timing system for work schedule calculation
 enum TimingSystem {
+  /// 12 hours work, 24 hours rest (3-day cycle)
   twelveTwentyFour,
+  /// Day: 12h work 24h rest, Night: 12h work 48h rest (4-day cycle)
   twelveTwentyFourTwelveFortyEight,
 }
 
+/// Type of work shift
 enum WorkType {
+  /// Day shift
   jour,
+  /// Night shift
   nuit,
+  /// Covered day (rest day)
   journeeCouverte,
+  /// Compensatory rest (only in 12/24, 12/48 system)
   reposCompensateur,
 }
 
+/// Status of a day in the work schedule
 enum DayStatus {
+  /// Day shift
   jour,
+  /// Night shift
   nuit,
+  /// Covered day (rest)
   journeeCouverte,
+  /// Compensatory rest
   reposCompensateur,
 }
 

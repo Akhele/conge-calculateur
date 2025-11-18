@@ -1,3 +1,12 @@
+/// About dialog widget displaying app information.
+/// 
+/// This dialog shows:
+/// - App icon
+/// - About message
+/// - Contact email (clickable, opens email client)
+/// 
+/// The email link is interactive and will launch the user's default
+/// email client when tapped.
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';

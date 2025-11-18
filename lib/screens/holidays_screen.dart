@@ -1,3 +1,14 @@
+/// Screen displaying Moroccan holidays calendar.
+/// 
+/// This screen shows all holidays for the current and upcoming years, grouped by year.
+/// Each holiday displays:
+/// - Date and day of week
+/// - Holiday name (in selected language)
+/// - Holiday type (public/religious)
+/// - Whether it falls on a weekend
+/// - Visual indicators for today and upcoming holidays
+/// 
+/// Users can refresh holidays to get the latest dates from the API.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';

@@ -1,3 +1,15 @@
+/// State management provider for language and locale settings.
+/// 
+/// This provider manages:
+/// - Current app language/locale
+/// - Language preference persistence
+/// - First launch detection
+/// - Date formatting initialization for the selected locale
+/// 
+/// Supported languages:
+/// - Arabic (ar)
+/// - French (fr_FR)
+/// - English (en_US)
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -81,6 +93,21 @@ class LanguageProvider extends ChangeNotifier {
     }
   }
 
+  /// Sets the app language and saves it to preferences.
+  /// 
+  /// This method:
+  /// 1. Updates the current locale
+  /// 2. Marks first launch as complete
+  /// 3. Saves preferences to SharedPreferences
+  /// 4. Initializes date formatting for the new locale
+  /// 5. Notifies listeners of the change
+  /// 
+  /// **Parameters:**
+  /// - [languageCode]: Language code ('fr', 'ar', 'en')
+  /// 
+  /// **Note:**
+  /// Includes extensive error handling and retry logic for iOS compatibility,
+  /// as iOS sometimes requires multiple attempts to persist SharedPreferences.
   Future<void> setLanguage(String languageCode) async {
     debugPrint('=== setLanguage called with: $languageCode ===');
     debugPrint('Current locale: ${_locale.languageCode}, isFirstLaunch: $_isFirstLaunch');

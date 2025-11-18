@@ -1,3 +1,14 @@
+/// Screen for calculating vacation return dates.
+/// 
+/// This screen allows users to:
+/// - Select a vacation start date
+/// - Enter the number of working days requested
+/// - View remaining available days
+/// - Calculate the return date
+/// 
+/// The calculation considers weekends and holidays automatically.
+/// Only working days (Monday-Friday, excluding holidays) count toward
+/// the requested days.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';

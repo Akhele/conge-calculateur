@@ -1,3 +1,17 @@
+/// Main home screen of the application.
+/// 
+/// This screen displays:
+/// - Annual leave summary (remaining days, used days, total days)
+/// - Quick action buttons for main features:
+///   - Calculate vacation
+///   - View history
+///   - View holidays calendar
+///   - Work schedule calculator
+/// - Settings access
+/// - Reset year functionality
+/// 
+/// The screen automatically checks internet connectivity on load and shows
+/// a dialog if offline.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/vacation_provider.dart';

@@ -1,3 +1,14 @@
+/// State management provider for vacation-related functionality.
+/// 
+/// This provider manages:
+/// - Holiday data loading and caching
+/// - Vacation calculations
+/// - Annual leave tracking (total days, used days, remaining days)
+/// - Vacation history
+/// - Internet connectivity checking
+/// 
+/// The provider automatically loads holidays on initialization and caches them
+/// for offline use. It also handles language changes for holiday names.
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -31,12 +42,22 @@ class VacationProvider extends ChangeNotifier {
   int get remainingDays => _totalAnnualDays - _usedDays;
   List<VacationCalculation> get history => _history;
 
+  /// Creates a new VacationProvider instance.
+  /// 
+  /// Automatically loads saved data and checks connectivity to load holidays.
   VacationProvider() {
     _loadSavedData();
     _checkConnectivityAndLoadHolidays();
   }
 
-  /// Check internet connectivity by making a simple HTTP request
+  /// Checks internet connectivity by making a simple HTTP request.
+  /// 
+  /// Tries to connect to Calendarific API first, then falls back to Google
+  /// if the API endpoint fails. This helps determine if we can fetch
+  /// fresh holiday data from the API.
+  /// 
+  /// **Returns:**
+  /// `true` if internet connection is available, `false` otherwise
   Future<bool> _checkInternetConnection() async {
     try {
       // Try to connect to a reliable endpoint (using the API base URL)
@@ -60,7 +81,15 @@ class VacationProvider extends ChangeNotifier {
     }
   }
 
-  /// Check internet connectivity and load holidays
+  /// Checks internet connectivity and loads holidays accordingly.
+  /// 
+  /// This method:
+  /// 1. First tries to load cached holidays
+  /// 2. Checks if holidays were already fetched today
+  /// 3. If not fetched today, checks internet connection
+  /// 4. Loads holidays from API (or uses fallback if offline)
+  /// 
+  /// Holidays are cached daily to avoid unnecessary API calls.
   Future<void> _checkConnectivityAndLoadHolidays() async {
     // First, try to load cached holidays
     await _loadCachedHolidays();
@@ -87,7 +116,13 @@ class VacationProvider extends ChangeNotifier {
     await _loadHolidays();
   }
 
-  /// Set the current language for API calls
+  /// Sets the current language for holiday API calls.
+  /// 
+  /// When language changes, this method will reload holidays with the new
+  /// language if they haven't been fetched today. Otherwise, it uses cached data.
+  /// 
+  /// **Parameters:**
+  /// - [language]: Language code ('fr', 'ar', 'en') or null for default
   Future<void> setLanguage(String? language) async {
     if (_currentLanguage != language) {
       _currentLanguage = language;
@@ -319,6 +354,20 @@ class VacationProvider extends ChangeNotifier {
     await _loadHolidays();
   }
 
+  /// Calculates vacation return date based on start date and requested working days.
+  /// 
+  /// This method:
+  /// 1. Validates the request (days > 0, within remaining balance)
+  /// 2. Ensures holidays are loaded for the vacation period
+  /// 3. Calls VacationCalculator to perform the calculation
+  /// 4. Stores the result in [currentCalculation]
+  /// 
+  /// **Parameters:**
+  /// - [startDate]: The first day of vacation
+  /// - [requestedDays]: Number of working days requested
+  /// 
+  /// **Throws:**
+  /// Sets [error] if validation fails or calculation encounters an error
   Future<void> calculateVacation({
     required DateTime startDate,
     required int requestedDays,
@@ -439,6 +488,16 @@ class VacationProvider extends ChangeNotifier {
     }
   }
 
+  /// Confirms and saves the current vacation calculation to history.
+  /// 
+  /// This method:
+  /// - Adds the requested days to used days
+  /// - Saves the calculation to history
+  /// - Persists data to SharedPreferences
+  /// 
+  /// **Note:**
+  /// This should be called after the user confirms they want to save the vacation.
+  /// The calculation must exist in [currentCalculation] before calling this method.
   Future<void> confirmVacation() async {
     if (_currentCalculation == null) return;
 
